@@ -25,28 +25,40 @@
             </objects>
             <point key="canvasLocation" x="-687" y="164"/>
         </scene>
-        <!--Collection View Controller-->
+        <!--Menu Collection View Controller-->
         <scene sceneID="6lQ-67-238">
             <objects>
-                <collectionViewController id="w7b-1h-VdC" sceneMemberID="viewController">
+                <collectionViewController id="w7b-1h-VdC" customClass="MenuCollectionViewController" customModule="gitApp" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="3Q4-6u-8mV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="V1X-gQ-pME">
-                            <size key="itemSize" width="97" height="93"/>
+                            <size key="itemSize" width="164" height="152"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="TN2-zO-bJg">
-                                <rect key="frame" x="0.0" y="0.0" width="97" height="93"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="TN2-zO-bJg" customClass="ResultCollectionViewCell" customModule="gitApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="164" height="152"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="97" height="93"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="164" height="152"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6QP-zz-D2N">
+                                            <rect key="frame" x="61" y="66" width="42" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </view>
+                                <connections>
+                                    <outlet property="nameLabel" destination="6QP-zz-D2N" id="cP6-qg-6aY"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -57,20 +69,16 @@
                     <navigationItem key="navigationItem" id="9Gs-hy-pCq">
                         <nil key="title"/>
                         <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="Ni2-nl-XeQ">
-                            <rect key="frame" x="68" y="7" width="202" height="30"/>
+                            <rect key="frame" x="51" y="7" width="273" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <barButtonItem key="rightBarButtonItem" id="JBh-5h-eGc">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XZS-15-YCE">
-                                <rect key="frame" x="276" y="7" width="83" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchTextField" destination="Ni2-nl-XeQ" id="YjE-os-Jjd"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gbm-RA-nwO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
