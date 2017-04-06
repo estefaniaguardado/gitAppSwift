@@ -17,7 +17,6 @@
 		CAB2E2BE1E8E81C7000B773D /* gitAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2BD1E8E81C7000B773D /* gitAppTests.swift */; };
 		CAB2E2C91E8E81C8000B773D /* gitAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2C81E8E81C8000B773D /* gitAppUITests.swift */; };
 		CAFA71E61E962DBB00F7F146 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA71E51E962DBB00F7F146 /* Repository.swift */; };
-		CAFA71E81E96300E00F7F146 /* RepositoryOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA71E71E96300E00F7F146 /* RepositoryOwner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +53,6 @@
 		CAB2E2C81E8E81C8000B773D /* gitAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gitAppUITests.swift; sourceTree = "<group>"; };
 		CAB2E2CA1E8E81C8000B773D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAFA71E51E962DBB00F7F146 /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		CAFA71E71E96300E00F7F146 /* RepositoryOwner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryOwner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +146,6 @@
 			isa = PBXGroup;
 			children = (
 				CAFA71E51E962DBB00F7F146 /* Repository.swift */,
-				CAFA71E71E96300E00F7F146 /* RepositoryOwner.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -288,7 +285,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA620AAA1E923D100078D888 /* GitService.swift in Sources */,
-				CAFA71E81E96300E00F7F146 /* RepositoryOwner.swift in Sources */,
 				CA620AA51E9235890078D888 /* MenuCollectionViewController.swift in Sources */,
 				CAFA71E61E962DBB00F7F146 /* Repository.swift in Sources */,
 				CA620AA71E9237250078D888 /* ResultCollectionViewCell.swift in Sources */,
