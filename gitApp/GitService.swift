@@ -34,8 +34,7 @@ class GitService{
             do {
                 if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                     
-                    print(convertedJsonIntoDict)
-                    
+                    _ = self.getArrayOfRepositories(dictionary: convertedJsonIntoDict)
                 }
             } catch let error as NSError {
                 print(error.localizedDescription)
@@ -44,6 +43,12 @@ class GitService{
         }
 
             task.resume()
-        
     }
+    
+    func getArrayOfRepositories(dictionary:NSDictionary) -> Array<Repository> {
+        let items:Array<Dictionary<String, AnyObject>> = [[dictionary.value(forKey: "items")][0]][0] as! Array<Dictionary<String, AnyObject>>
+        
+        return []
+    }
+
 }
