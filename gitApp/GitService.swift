@@ -46,9 +46,29 @@ class GitService{
     }
     
     func getArrayOfRepositories(dictionary:NSDictionary) -> Array<Repository> {
-        let items:Array<Dictionary<String, AnyObject>> = [[dictionary.value(forKey: "items")][0]][0] as! Array<Dictionary<String, AnyObject>>
+        let items = [[dictionary.value(forKey: "items")][0]][0] as! Array<NSDictionary>
+        
+        for (index, item) in items.enumerated(){
+            let itemName = item.value(forKey: "name") as! String
+            let itemLanguage = item.value(forKey: "language") as! String
+            let itemForks = item.value(forKey: "forks_count") as! Int
+            let owner = item.value(forKey: "owner") as! NSDictionary
+            let loginOwner = owner.value(forKey: "login") as! String
+            let avatarOwner = owner.value(forKey: "avatar_url") as! String
+            
+            print(item, index)
+            
+            
+            
+        }
         
         return []
+    }
+    
+    func initializeRepositoryData(data:Dictionary<String, AnyObject>) -> Repository {
+        let repository = Repository.init(name: "", repoLanguage: "", forks: 0, owner: "", imageURL: URL.init(string: "")!)
+        
+        return repository
     }
 
 }
