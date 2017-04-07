@@ -48,27 +48,31 @@ class GitService{
     func getArrayOfRepositories(dictionary:NSDictionary) -> Array<Repository> {
         let items = [[dictionary.value(forKey: "items")][0]][0] as! Array<NSDictionary>
         
-        for (index, item) in items.enumerated(){
-            let itemName = item.value(forKey: "name") as! String
-            let itemLanguage = item.value(forKey: "language") as! String
-            let itemForks = item.value(forKey: "forks_count") as! Int
-            let owner = item.value(forKey: "owner") as! NSDictionary
-            let loginOwner = owner.value(forKey: "login") as! String
-            let avatarOwner = owner.value(forKey: "avatar_url") as! String
-            
-            print(item, index)
-            
-            
-            
+        var repositoryArray = [Repository]()
+        
+        for (_, item) in items.enumerated(){
+            repositoryArray.append(self.initializeRepositoryData(data: item))
         }
         
-        return []
+        return repositoryArray
     }
     
-    func initializeRepositoryData(data:Dictionary<String, AnyObject>) -> Repository {
-        let repository = Repository.init(name: "", repoLanguage: "", forks: 0, owner: "", imageURL: URL.init(string: "")!)
+    func initializeRepositoryData(data:NSDictionary) -> Repository {
+        let itemName = data.value(forKey: "name") as! String
+        let itemLanguage = (data.value(forKey: "language") as? String != nil) ?
+                            data.value(forKey: "language") as! String : ""
+        let itemForks = data.value(forKey: "forks_count") as! Int
+        let owner = data.value(forKey: "owner") as! NSDictionary
+        let loginOwner = owner.value(forKey: "login") as! String
+        let avatarOwner = (owner.value(forKey: "avatar_url") as? String != nil) ?
+                           owner.value(forKey: "avatar_url") as! String : ""
         
-        return repository
+        return Repository.init(name: itemName,
+                               repoLanguage: itemLanguage,
+                               forks: itemForks,
+                               owner: loginOwner,
+                               imageURL: URL.init(string: avatarOwner)!)
+        
     }
 
 }
