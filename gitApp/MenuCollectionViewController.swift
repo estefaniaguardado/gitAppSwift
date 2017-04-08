@@ -13,14 +13,19 @@ private let reuseIdentifier = "Cell"
 class MenuCollectionViewController: UICollectionViewController {
     
     @IBOutlet weak var searchTextField: UITextField!
-    
-    private let gitService = GitService()
+    private let repositoriesData = GitService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gitService.getResults()
+        updateCollectionViewModel()
 
+    }
+    
+    func updateCollectionViewModel() {
+        let data = repositoriesData.getRepositories()
+        print(data)
+    
     }
 
     override func didReceiveMemoryWarning() {
