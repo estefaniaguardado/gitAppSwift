@@ -29,7 +29,7 @@ class MenuCollectionViewController: UICollectionViewController {
         for (_, repository) in repositoriesData.enumerated() {
             
             let model:NSDictionary = [
-                "nib" : "ResultCollectionViewCell",
+                "nib" : "RepositoryCollectionViewCell",
                 "data" : repository
             ]
             

@@ -1,5 +1,5 @@
 //
-//  ResultCollectionViewCell.swift
+//  RepositoryCollectionViewCell.swift
 //  gitApp
 //
 //  Created by Estefania Guardado on 03.04.17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ResultCollectionViewCell: UICollectionViewCell {
+class RepositoryCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     

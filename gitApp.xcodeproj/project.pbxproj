@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA620AA51E9235890078D888 /* MenuCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA620AA41E9235890078D888 /* MenuCollectionViewController.swift */; };
-		CA620AA71E9237250078D888 /* ResultCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA620AA61E9237250078D888 /* ResultCollectionViewCell.swift */; };
+		CA620AA71E9237250078D888 /* RepositoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA620AA61E9237250078D888 /* RepositoryCollectionViewCell.swift */; };
 		CAB2E2A91E8E81C7000B773D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2A81E8E81C7000B773D /* AppDelegate.swift */; };
 		CAB2E2AE1E8E81C7000B773D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAB2E2AC1E8E81C7000B773D /* Main.storyboard */; };
 		CAB2E2B01E8E81C7000B773D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAB2E2AF1E8E81C7000B773D /* Assets.xcassets */; };
@@ -39,7 +39,7 @@
 
 /* Begin PBXFileReference section */
 		CA620AA41E9235890078D888 /* MenuCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewController.swift; sourceTree = "<group>"; };
-		CA620AA61E9237250078D888 /* ResultCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultCollectionViewCell.swift; sourceTree = "<group>"; };
+		CA620AA61E9237250078D888 /* RepositoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		CAB2E2A51E8E81C7000B773D /* gitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAB2E2A81E8E81C7000B773D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAB2E2AD1E8E81C7000B773D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 				CA620AA81E923CD40078D888 /* Services */,
 				CAB2E2A81E8E81C7000B773D /* AppDelegate.swift */,
 				CA620AA41E9235890078D888 /* MenuCollectionViewController.swift */,
-				CA620AA61E9237250078D888 /* ResultCollectionViewCell.swift */,
+				CA620AA61E9237250078D888 /* RepositoryCollectionViewCell.swift */,
 				CAB2E2AC1E8E81C7000B773D /* Main.storyboard */,
 				CAB2E2AF1E8E81C7000B773D /* Assets.xcassets */,
 				CAB2E2B11E8E81C7000B773D /* LaunchScreen.storyboard */,
@@ -298,7 +298,7 @@
 				CAF1A5D81E9906270075C02D /* IRepositoryDatasource.swift in Sources */,
 				CA620AA51E9235890078D888 /* MenuCollectionViewController.swift in Sources */,
 				CAF1A5D61E99061D0075C02D /* Repository.swift in Sources */,
-				CA620AA71E9237250078D888 /* ResultCollectionViewCell.swift in Sources */,
+				CA620AA71E9237250078D888 /* RepositoryCollectionViewCell.swift in Sources */,
 				CAF1A5D41E9906130075C02D /* GitService.swift in Sources */,
 				CAB2E2A91E8E81C7000B773D /* AppDelegate.swift in Sources */,
 			);
