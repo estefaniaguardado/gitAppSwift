@@ -13,19 +13,48 @@ private let reuseIdentifier = "Cell"
 class MenuCollectionViewController: UICollectionViewController {
     
     @IBOutlet weak var searchTextField: UITextField!
-    private let repositoriesData = GitService()
+    private let gitService = GitService()
+    private var repositoriesData = [Repository]()
+    private var viewModel = [NSDictionary]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        repositoriesData = gitService.getRepositories()
         updateCollectionViewModel()
 
     }
     
     func updateCollectionViewModel() {
-        let data = repositoriesData.getRepositories()
-        print(data)
+        for (_, repository) in repositoriesData.enumerated() {
+            
+            let model:NSDictionary = [
+                "nib" : "ResultCollectionViewCell",
+                "data" : repository
+            ]
+            
+            viewModel.append(model)
+        }
+        
+        registerNibs()
+        
+    }
     
+    func registerNibs() {
+        let collectionView = self.collectionView
+        let registeredNibs = NSMutableSet()
+        
+        for (_, cellViewModel) in viewModel.enumerated() {
+            
+            let nibFile = cellViewModel.value(forKey: "nib") as! String
+            
+            if registeredNibs.contains(nibFile) {
+                registeredNibs.add(nibFile)
+                
+                let nib = UINib.init(nibName: nibFile, bundle: nil)
+                collectionView?.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,13 +84,16 @@ class MenuCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ResultCollectionViewCell
         
-        cell.nameLabel.backgroundColor = UIColor .red
+        //let cellViewModel:NSDictionary = viewModel[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        
+        //if cellM.responds(to: #selector("data")){
+        //    cellM.perform(#selector("data"), with: cellViewModel.value(forKey: "data"))
+        //}
+
         cell.backgroundColor = UIColor .blue
-    
-        // Configure the cell
-    
+        
         return cell
     }
 
