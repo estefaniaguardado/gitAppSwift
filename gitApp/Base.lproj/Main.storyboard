@@ -79,7 +79,10 @@
                                     </subviews>
                                 </view>
                                 <connections>
+                                    <outlet property="forkCount" destination="W5e-qJ-50d" id="4BF-n5-y3X"/>
                                     <outlet property="nameLabel" destination="6QP-zz-D2N" id="cP6-qg-6aY"/>
+                                    <outlet property="ownerImage" destination="nGK-iR-W09" id="mZs-6t-LqB"/>
+                                    <outlet property="ownerName" destination="8MM-xC-mF7" id="KLm-4n-1gn"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>

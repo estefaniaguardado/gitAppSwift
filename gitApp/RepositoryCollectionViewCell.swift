@@ -11,9 +11,17 @@ import UIKit
 class RepositoryCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var ownerImage: UIImageView!
+    @IBOutlet weak var ownerName: UILabel!
+    @IBOutlet weak var forkCount: UILabel!
+    
     
     func setData(repositoryData:Repository) {
-        print(repositoryData)
+        nameLabel.text = repositoryData.repoName
+        ownerName.text = repositoryData.ownerName
+        forkCount.text = "\(repositoryData.forksCount)"
+        
     }
     
+
 }
