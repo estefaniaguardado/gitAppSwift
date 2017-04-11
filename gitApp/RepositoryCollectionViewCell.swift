@@ -16,11 +16,11 @@ class RepositoryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var forkCount: UILabel!
     
     
-    func setData(repositoryData:Repository) {
+    func setData(repositoryData:Repository, imageOwner:UIImage) {
         nameLabel.text = repositoryData.repoName
         ownerName.text = repositoryData.ownerName
         forkCount.text = "\(repositoryData.forksCount)"
-        
+        ownerImage.image = imageOwner
     }
     
 

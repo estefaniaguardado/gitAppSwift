@@ -16,6 +16,7 @@ class MenuCollectionViewController: UICollectionViewController {
     private let gitService = GitService()
     private var repositoriesData = [Repository]()
     private var viewModel = [NSDictionary]()
+    private var downloadedImages = [UIImage]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +36,21 @@ class MenuCollectionViewController: UICollectionViewController {
             else {
                 self.repositoriesData = results!
                 
-                self.collectionView?.reloadData()
+                DispatchQueue.global(qos: .userInitiated).async {
+                    for (_, repository) in self.repositoriesData.enumerated() {
+                        self.downloadImageFromURL(imageURL: repository.ownerAvatar!)
+                    }
+                    
+                    self.collectionView?.reloadData()
+                }
             }
         }
 
+    }
+    
+    func downloadImageFromURL(imageURL:URL) {
+        let imageData:NSData = NSData(contentsOf: imageURL)!
+        downloadedImages.append(UIImage(data: imageData as Data)!)
     }
 
 
@@ -71,8 +83,9 @@ class MenuCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let viewCellData:Repository = repositoriesData[indexPath.row]
+        let imageOwnerRepository:UIImage = downloadedImages[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! RepositoryCollectionViewCell
-        cell.setData(repositoryData: viewCellData)
+        cell.setData(repositoryData: viewCellData, imageOwner: imageOwnerRepository)
         
         return cell
     }
