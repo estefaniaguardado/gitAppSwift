@@ -26,35 +26,7 @@ class MenuCollectionViewController: UICollectionViewController {
     }
     
     func updateCollectionViewModel() {
-        for (_, repository) in repositoriesData.enumerated() {
-            
-            let model:NSDictionary = [
-                "nib" : "RepositoryCollectionViewCell",
-                "data" : repository
-            ]
-            
-            viewModel.append(model)
-        }
         
-        registerNibs()
-        
-    }
-    
-    func registerNibs() {
-        let collectionView = self.collectionView
-        let registeredNibs = NSMutableSet()
-        
-        for (_, cellViewModel) in viewModel.enumerated() {
-            
-            let nibFile = cellViewModel.value(forKey: "nib") as! String
-            
-            if registeredNibs.contains(nibFile) {
-                registeredNibs.add(nibFile)
-                
-                let nib = UINib.init(nibName: nibFile, bundle: nil)
-                collectionView?.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
-            }
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,19 +52,14 @@ class MenuCollectionViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return repositoriesData.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        //let cellViewModel:NSDictionary = viewModel[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        
-        //if cellM.responds(to: #selector("data")){
-        //    cellM.perform(#selector("data"), with: cellViewModel.value(forKey: "data"))
-        //}
-
-        cell.backgroundColor = UIColor .blue
+        let viewCellData:Repository = repositoriesData[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! RepositoryCollectionViewCell
+        cell.setData(repositoryData: viewCellData)
         
         return cell
     }

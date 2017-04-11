@@ -12,4 +12,8 @@ class RepositoryCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     
+    func setData(repositoryData:Repository) {
+        print(repositoryData)
+    }
+    
 }
