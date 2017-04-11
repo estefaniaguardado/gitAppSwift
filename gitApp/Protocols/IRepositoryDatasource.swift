@@ -10,6 +10,6 @@ import Foundation
 
 protocol IRepositoryDataSource {
     
-    func getRepositories() -> Array<Repository>
+    func getRepositories(completion:@escaping (_ repositories: Array<Repository>?, _ error:NSError?) -> Void) -> Void
 
 }

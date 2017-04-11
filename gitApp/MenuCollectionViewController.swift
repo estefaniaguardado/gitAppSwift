@@ -20,14 +20,27 @@ class MenuCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        repositoriesData = gitService.getRepositories()
-        updateCollectionViewModel()
-
-    }
-    
-    func updateCollectionViewModel() {
+        getGitData()
         
     }
+    
+    func getGitData() -> Void {
+        gitService.getRepositories(){
+            results, error in
+            
+            if let error = error {
+                print("Error searching : \(error)")
+            }
+            
+            else {
+                self.repositoriesData = results!
+                
+                self.collectionView?.reloadData()
+            }
+        }
+
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
