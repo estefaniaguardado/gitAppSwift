@@ -10,53 +10,89 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class MenuCollectionViewController: UICollectionViewController {
+class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var searchTextField: UITextField!
     private let gitService = GitService()
     private var repositoriesData = [Repository]()
     private var viewModel = [NSDictionary]()
     private var downloadedImages = [UIImage]()
+    
+    @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet var searchButton: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getGitData()
+        searchTextField.delegate = self
         
     }
+
+    @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
+        self.searchTextField.resignFirstResponder()
+        
+        if (searchTextField.text?.trimmingCharacters(in: .whitespaces).isEmpty)!{
+            self.presentAlertIncompleteInformation()
+        } else{
+            let searchTerm:String = (searchTextField.text!).replacingOccurrences(of: " ", with: "-")
+            searchTextField.text = searchTerm
+            self.searchTextField.isUserInteractionEnabled = false
+            self.searchTextField.textColor = UIColor.gray
+            self.searchButton.isEnabled = false
+            self.searchButton.tintColor = UIColor.gray
+            getGitData(term: searchTerm)
+        }
+    }
     
-    func getGitData() -> Void {
-        gitService.getRepositories(){
+    func presentAlertIncompleteInformation(){
+        let alert = UIAlertController.init(title: "Empty search",
+                                           message: "Complete with search term for the researching",
+                                           preferredStyle: UIAlertControllerStyle.alert)
+        
+        let defaultAction = UIAlertAction.init(title: "Ok",
+                                               style: UIAlertActionStyle.default)
+        
+        alert.addAction(defaultAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func getGitData(term:String) -> Void {
+        gitService.getRepositories(searchTerm: term){
             results, error in
             
             if let error = error {
                 print("Error searching : \(error)")
             }
-            
+                
             else {
                 self.repositoriesData = results!
                 
-                DispatchQueue.global(qos: .userInitiated).async {
+                let loadingCollection = DispatchGroup()
+                loadingCollection.enter()
+                
+                DispatchQueue.main.async{
                     for (_, repository) in self.repositoriesData.enumerated() {
                         self.downloadImageFromURL(imageURL: repository.ownerAvatar!)
                     }
                     
                     self.collectionView?.reloadData()
+
+                    loadingCollection.leave()
+                }
+                
+                loadingCollection.notify(queue: .main){
+                    self.searchTextField.isUserInteractionEnabled = true
+                    self.searchTextField.textColor = UIColor.black
+                    self.searchButton.isEnabled = true
+                    self.searchButton.tintColor = UIColor.blue
                 }
             }
         }
-
+        
     }
     
     func downloadImageFromURL(imageURL:URL) {
         let imageData:NSData = NSData(contentsOf: imageURL)!
         downloadedImages.append(UIImage(data: imageData as Data)!)
-    }
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     /*

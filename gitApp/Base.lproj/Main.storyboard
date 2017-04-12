@@ -93,16 +93,25 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="9Gs-hy-pCq">
                         <nil key="title"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="Ni2-nl-XeQ">
-                            <rect key="frame" x="51" y="7" width="273" height="30"/>
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" id="Ni2-nl-XeQ">
+                            <rect key="frame" x="57" y="7" width="262" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
+                            <connections>
+                                <outlet property="delegate" destination="w7b-1h-VdC" id="eYB-3e-HHH"/>
+                            </connections>
                         </textField>
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="ggs-yn-rfI">
+                            <connections>
+                                <action selector="tappedSearch:" destination="w7b-1h-VdC" id="UhA-Zx-vHX"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="searchTextField" destination="Ni2-nl-XeQ" id="YjE-os-Jjd"/>
+                        <outlet property="searchButton" destination="ggs-yn-rfI" id="bSi-uw-sDK"/>
+                        <outlet property="searchTextField" destination="Ni2-nl-XeQ" id="HaH-Ok-FUW"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gbm-RA-nwO" userLabel="First Responder" sceneMemberID="firstResponder"/>
