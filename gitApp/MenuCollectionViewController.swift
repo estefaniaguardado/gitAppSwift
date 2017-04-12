@@ -16,16 +16,37 @@ class MenuCollectionViewController: UICollectionViewController {
     private var repositoriesData = [Repository]()
     private var viewModel = [NSDictionary]()
     private var downloadedImages = [UIImage]()
+    private var searchTerm = String()
     
     @IBOutlet weak var searchTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getGitData()
-        
+    }
+
+    @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
+        self.resignFirstResponder()
+        if (searchTextField.text?.trimmingCharacters(in: .whitespaces).isEmpty)!{
+            self.presentAlertIncompleteInformation()
+        } else{
+            //getGitData()
+            print(searchTerm)
+        }
     }
     
+    func presentAlertIncompleteInformation(){
+        let alert = UIAlertController.init(title: "Empty search",
+                                           message: "Complete with search term for the researching",
+                                           preferredStyle: UIAlertControllerStyle.alert)
+        
+        let defaultAction = UIAlertAction.init(title: "Ok",
+                                               style: UIAlertActionStyle.default)
+        
+        alert.addAction(defaultAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+
     func getGitData() -> Void {
         gitService.getRepositories(){
             results, error in
@@ -33,7 +54,7 @@ class MenuCollectionViewController: UICollectionViewController {
             if let error = error {
                 print("Error searching : \(error)")
             }
-            
+                
             else {
                 self.repositoriesData = results!
                 
@@ -46,18 +67,13 @@ class MenuCollectionViewController: UICollectionViewController {
                 }
             }
         }
-
+        
     }
     
     func downloadImageFromURL(imageURL:URL) {
         let imageData:NSData = NSData(contentsOf: imageURL)!
         downloadedImages.append(UIImage(data: imageData as Data)!)
     }
-
-    @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
-        print("hila")
-    }
-
 
     /*
     // MARK: - Navigation
