@@ -12,11 +12,12 @@ private let reuseIdentifier = "Cell"
 
 class MenuCollectionViewController: UICollectionViewController {
     
-    @IBOutlet weak var searchTextField: UITextField!
     private let gitService = GitService()
     private var repositoriesData = [Repository]()
     private var viewModel = [NSDictionary]()
     private var downloadedImages = [UIImage]()
+    
+    @IBOutlet weak var searchTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,11 +54,10 @@ class MenuCollectionViewController: UICollectionViewController {
         downloadedImages.append(UIImage(data: imageData as Data)!)
     }
 
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
+        print("hila")
     }
+
 
     /*
     // MARK: - Navigation
