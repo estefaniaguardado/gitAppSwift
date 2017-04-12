@@ -35,12 +35,16 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         } else{
             let searchTerm:String = (searchTextField.text!).replacingOccurrences(of: " ", with: "-")
             searchTextField.text = searchTerm
-            self.searchTextField.isUserInteractionEnabled = false
-            self.searchTextField.textColor = UIColor.gray
-            self.searchButton.isEnabled = false
-            self.searchButton.tintColor = UIColor.gray
+            customizationOutlets(isEnable: false, color: UIColor.gray)
             getGitData(term: searchTerm)
         }
+    }
+    
+    func customizationOutlets(isEnable:Bool, color:UIColor) {
+        self.searchTextField.isUserInteractionEnabled = isEnable
+        self.searchTextField.textColor = color
+        self.searchButton.isEnabled = isEnable
+        self.searchButton.tintColor = color
     }
     
     func presentAlertIncompleteInformation(){
@@ -56,6 +60,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     }
 
     func getGitData(term:String) -> Void {
+        
         gitService.getRepositories(searchTerm: term){
             results, error in
             
@@ -65,6 +70,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 
             else {
                 self.repositoriesData = results!
+                
+                self.downloadedImages.removeAll()
                 
                 let loadingCollection = DispatchGroup()
                 loadingCollection.enter()
@@ -80,10 +87,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 }
                 
                 loadingCollection.notify(queue: .main){
-                    self.searchTextField.isUserInteractionEnabled = true
-                    self.searchTextField.textColor = UIColor.black
-                    self.searchButton.isEnabled = true
-                    self.searchButton.tintColor = UIColor.blue
+                    self.customizationOutlets(isEnable: true, color: UIColor.black)
+                    
                 }
             }
         }

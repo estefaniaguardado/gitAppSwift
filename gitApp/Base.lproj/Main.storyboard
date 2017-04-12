@@ -104,6 +104,7 @@
                             </connections>
                         </textField>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="ggs-yn-rfI">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="tappedSearch:" destination="w7b-1h-VdC" id="UhA-Zx-vHX"/>
                             </connections>
