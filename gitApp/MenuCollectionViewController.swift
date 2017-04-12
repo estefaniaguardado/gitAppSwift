@@ -10,28 +10,31 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class MenuCollectionViewController: UICollectionViewController {
+class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate {
     
     private let gitService = GitService()
     private var repositoriesData = [Repository]()
     private var viewModel = [NSDictionary]()
     private var downloadedImages = [UIImage]()
-    private var searchTerm = String()
     
     @IBOutlet weak var searchTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        searchTextField.delegate = self
+        
     }
 
     @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
-        self.resignFirstResponder()
+        self.searchTextField.resignFirstResponder()
+        
         if (searchTextField.text?.trimmingCharacters(in: .whitespaces).isEmpty)!{
             self.presentAlertIncompleteInformation()
         } else{
-            //getGitData()
-            print(searchTerm)
+            let searchTerm:String = (searchTextField.text!).replacingOccurrences(of: " ", with: "-")
+            searchTextField.text = searchTerm
+            getGitData(term: searchTerm)
         }
     }
     
@@ -47,8 +50,8 @@ class MenuCollectionViewController: UICollectionViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    func getGitData() -> Void {
-        gitService.getRepositories(){
+    func getGitData(term:String) -> Void {
+        gitService.getRepositories(searchTerm: term){
             results, error in
             
             if let error = error {

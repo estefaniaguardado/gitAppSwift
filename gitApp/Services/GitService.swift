@@ -10,9 +10,8 @@ import Foundation
 
 class GitService: IRepositoryDataSource{
 
-    func getRepositories(completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void {
+    func getRepositories(searchTerm:String, completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void {
         
-        let searchTerm = "helloWorld"
         var repositories = [Repository]()
         
         var requestURL = URLRequest (url: URL (string: "https://api.github.com/search/repositories?q=topic:" + searchTerm + "&sort=stars&order=desc")!)
