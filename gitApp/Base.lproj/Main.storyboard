@@ -110,6 +110,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchButton" destination="ggs-yn-rfI" id="bSi-uw-sDK"/>
                         <outlet property="searchTextField" destination="Ni2-nl-XeQ" id="HaH-Ok-FUW"/>
                     </connections>
                 </collectionViewController>

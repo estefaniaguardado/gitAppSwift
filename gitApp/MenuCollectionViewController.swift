@@ -18,6 +18,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     private var downloadedImages = [UIImage]()
     
     @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet var searchButton: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,10 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         } else{
             let searchTerm:String = (searchTextField.text!).replacingOccurrences(of: " ", with: "-")
             searchTextField.text = searchTerm
+            self.searchTextField.isUserInteractionEnabled = false
+            self.searchTextField.textColor = UIColor.gray
+            self.searchButton.isEnabled = false
+            self.searchButton.tintColor = UIColor.gray
             getGitData(term: searchTerm)
         }
     }
@@ -61,12 +66,24 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             else {
                 self.repositoriesData = results!
                 
-                DispatchQueue.global(qos: .userInitiated).async {
+                let loadingCollection = DispatchGroup()
+                loadingCollection.enter()
+                
+                DispatchQueue.main.async{
                     for (_, repository) in self.repositoriesData.enumerated() {
                         self.downloadImageFromURL(imageURL: repository.ownerAvatar!)
                     }
                     
                     self.collectionView?.reloadData()
+
+                    loadingCollection.leave()
+                }
+                
+                loadingCollection.notify(queue: .main){
+                    self.searchTextField.isUserInteractionEnabled = true
+                    self.searchTextField.textColor = UIColor.black
+                    self.searchButton.isEnabled = true
+                    self.searchButton.tintColor = UIColor.blue
                 }
             }
         }
