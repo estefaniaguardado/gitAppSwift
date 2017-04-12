@@ -13,15 +13,46 @@ private let reuseIdentifier = "Cell"
 class MenuCollectionViewController: UICollectionViewController {
     
     @IBOutlet weak var searchTextField: UITextField!
-    
     private let gitService = GitService()
+    private var repositoriesData = [Repository]()
+    private var viewModel = [NSDictionary]()
+    private var downloadedImages = [UIImage]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gitService.getResults()
+        getGitData()
+        
+    }
+    
+    func getGitData() -> Void {
+        gitService.getRepositories(){
+            results, error in
+            
+            if let error = error {
+                print("Error searching : \(error)")
+            }
+            
+            else {
+                self.repositoriesData = results!
+                
+                DispatchQueue.global(qos: .userInitiated).async {
+                    for (_, repository) in self.repositoriesData.enumerated() {
+                        self.downloadImageFromURL(imageURL: repository.ownerAvatar!)
+                    }
+                    
+                    self.collectionView?.reloadData()
+                }
+            }
+        }
 
     }
+    
+    func downloadImageFromURL(imageURL:URL) {
+        let imageData:NSData = NSData(contentsOf: imageURL)!
+        downloadedImages.append(UIImage(data: imageData as Data)!)
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -46,17 +77,16 @@ class MenuCollectionViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return repositoriesData.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ResultCollectionViewCell
         
-        cell.nameLabel.backgroundColor = UIColor .red
-        cell.backgroundColor = UIColor .blue
-    
-        // Configure the cell
-    
+        let viewCellData:Repository = repositoriesData[indexPath.row]
+        let imageOwnerRepository:UIImage = downloadedImages[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! RepositoryCollectionViewCell
+        cell.setData(repositoryData: viewCellData, imageOwner: imageOwnerRepository)
+        
         return cell
     }
 

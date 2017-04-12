@@ -8,11 +8,12 @@
 
 import Foundation
 
-class GitService{
+class GitService: IRepositoryDataSource{
 
-    func getResults() {
+    func getRepositories(completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void {
         
         let searchTerm = "helloWorld"
+        var repositories = [Repository]()
         
         var requestURL = URLRequest (url: URL (string: "https://api.github.com/search/repositories?q=topic:" + searchTerm + "&sort=stars&order=desc")!)
         
@@ -25,7 +26,7 @@ class GitService{
         
             if (error != nil) {
                 print("ERROR=\(error)")
-                return
+                completion(repositories, error as NSError?)
             }
             
             let response = String (data: data!, encoding: String.Encoding.utf8)
@@ -34,7 +35,8 @@ class GitService{
             do {
                 if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                     
-                    _ = self.getArrayOfRepositories(dictionary: convertedJsonIntoDict)
+                    repositories = self.getArrayOfRepositories(dictionary: convertedJsonIntoDict)
+                    completion(repositories, error as NSError?)
                 }
             } catch let error as NSError {
                 print(error.localizedDescription)
@@ -42,7 +44,7 @@ class GitService{
             
         }
 
-            task.resume()
+        task.resume()
     }
     
     func getArrayOfRepositories(dictionary:NSDictionary) -> Array<Repository> {
