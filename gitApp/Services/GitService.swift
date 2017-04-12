@@ -8,15 +8,19 @@
 
 import Foundation
 
-class GitService: IRepositoryDataSource{
+let GITHUB_REPOSITORIES_URL = "https://api.github.com/search/repositories?q=topic:"
 
+class GitService: IRepositoryDataSource {
+
+    /**
+     @ref https://api.github.com/search/repositories?q=topic:helloworld&sort=stars&order=desc
+     */
     func getRepositories(searchTerm:String, completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void {
         
         var repositories = [Repository]()
         
-        var requestURL = URLRequest (url: URL (string: "https://api.github.com/search/repositories?q=topic:" + searchTerm + "&sort=stars&order=desc")!)
-        
-        //"https://api.github.com/search/repositories?q=topic:helloworld&sort=stars&order=desc"
+        var requestURL = URLRequest (url: URL (string: GITHUB_REPOSITORIES_URL + searchTerm + "&sort=stars&order=desc")!)
+
         
         requestURL.httpMethod = "GET"
         
@@ -26,9 +30,10 @@ class GitService: IRepositoryDataSource{
             if (error != nil) {
                 print("ERROR=\(error)")
                 completion(repositories, error as NSError?)
+                return
             }
             
-            let response = String (data: data!, encoding: String.Encoding.utf8)
+            let response = String (data: data!, encoding: .utf8)
             print("RESPONSE = \(response)")
             
             do {
@@ -49,6 +54,7 @@ class GitService: IRepositoryDataSource{
     func getArrayOfRepositories(dictionary:NSDictionary) -> Array<Repository> {
         let items = [[dictionary.value(forKey: "items")][0]][0] as! Array<NSDictionary>
         
+        // TODO: Use map
         var repositoryArray = [Repository]()
         
         for (_, item) in items.enumerated(){
@@ -58,7 +64,7 @@ class GitService: IRepositoryDataSource{
         return repositoryArray
     }
     
-    func initializeRepositoryData(data:NSDictionary) -> Repository {
+    func initializeRepositoryData(data: NSDictionary) -> Repository {
         let itemName = data.value(forKey: "name") as! String
         let itemLanguage = (data.value(forKey: "language") as? String != nil) ?
                             data.value(forKey: "language") as! String : ""

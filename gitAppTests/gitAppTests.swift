@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import gitApp
 
 class gitAppTests: XCTestCase {
     

@@ -8,15 +8,14 @@
 
 import Foundation
 
-struct Repository{
-    
-    var repoName = String()
-    var language = String()
-    var forksCount = Int()
-    var ownerName = String()
-    var ownerAvatar = URL (string: String())
+struct Repository {
+    var repoName: String
+    var language: String
+    var forksCount: Int
+    var ownerName: String
+    var ownerAvatar: URL
 
-    init(name:String, repoLanguage:String, forks: Int, owner: String, imageURL: URL) {
+    init(name:String, repoLanguage: String, forks: Int, owner: String, imageURL: URL) {
         repoName = name
         language = repoLanguage
         forksCount = forks

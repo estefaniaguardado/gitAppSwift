@@ -14,7 +14,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     
     private let gitService = GitService()
     private var repositoriesData = [Repository]()
-    private var viewModel = [NSDictionary]()
     private var downloadedImages = [UIImage]()
     
     @IBOutlet weak var searchTextField: UITextField!
@@ -24,19 +23,18 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         super.viewDidLoad()
         
         searchTextField.delegate = self
-        
     }
 
     @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
         self.searchTextField.resignFirstResponder()
-        
-        if (searchTextField.text?.trimmingCharacters(in: .whitespaces).isEmpty)!{
+        let query = searchTextField.text?.trimmingCharacters(in: .whitespaces)
+        if (query?.isEmpty)!{
             self.presentAlertIncompleteInformation()
-        } else{
-            let searchTerm:String = (searchTextField.text!).replacingOccurrences(of: " ", with: "-")
+        } else {
+            let searchTerm = query?.replacingOccurrences(of: " ", with: "-")
             searchTextField.text = searchTerm
             customizationOutlets(isEnable: false, color: UIColor.gray)
-            getGitData(term: searchTerm)
+            getGitData(term: searchTerm!)
         }
     }
     
@@ -50,25 +48,23 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     func presentAlertIncompleteInformation(){
         let alert = UIAlertController.init(title: "Empty search",
                                            message: "Complete with search term for the researching",
-                                           preferredStyle: UIAlertControllerStyle.alert)
+                                           preferredStyle: .alert)
         
         let defaultAction = UIAlertAction.init(title: "Ok",
-                                               style: UIAlertActionStyle.default)
+                                               style: .default)
         
         alert.addAction(defaultAction)
         self.present(alert, animated: true, completion: nil)
     }
 
-    func getGitData(term:String) -> Void {
+    func getGitData(term: String) -> Void {
         
-        gitService.getRepositories(searchTerm: term){
+        gitService.getRepositories(searchTerm: term) {
             results, error in
             
             if let error = error {
                 print("Error searching : \(error)")
-            }
-                
-            else {
+            } else {
                 self.repositoriesData = results!
                 
                 self.downloadedImages.removeAll()
@@ -78,7 +74,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 
                 DispatchQueue.main.async{
                     for (_, repository) in self.repositoriesData.enumerated() {
-                        self.downloadImageFromURL(imageURL: repository.ownerAvatar!)
+                        self.downloadImageFromURL(imageURL: repository.ownerAvatar)
                     }
                     
                     self.collectionView?.reloadData()
@@ -87,35 +83,17 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 }
                 
                 loadingCollection.notify(queue: .main){
-                    self.customizationOutlets(isEnable: true, color: UIColor.black)
-                    
+                    self.customizationOutlets(isEnable: true, color: .black)
                 }
             }
         }
         
     }
     
-    func downloadImageFromURL(imageURL:URL) {
-        let imageData:NSData = NSData(contentsOf: imageURL)!
+    func downloadImageFromURL(imageURL: URL) {
+        let imageData = NSData(contentsOf: imageURL)!
         downloadedImages.append(UIImage(data: imageData as Data)!)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return repositoriesData.count
@@ -123,43 +101,11 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let viewCellData:Repository = repositoriesData[indexPath.row]
-        let imageOwnerRepository:UIImage = downloadedImages[indexPath.row]
+        let viewCellData = repositoriesData[indexPath.row]
+        let imageOwnerRepository = downloadedImages[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! RepositoryCollectionViewCell
         cell.setData(repositoryData: viewCellData, imageOwner: imageOwnerRepository)
         
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-
 }
