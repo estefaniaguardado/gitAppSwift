@@ -11,6 +11,7 @@ import MBProgressHUD
 import DZNEmptyDataSet
 
 private let reuseIdentifier = "Cell"
+private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, alpha: 0) //26.82.118
 
 class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -25,8 +26,9 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         super.viewDidLoad()
         
         searchTextField.delegate = self
-        self.collectionView?.emptyDataSetSource = self
-        self.collectionView?.emptyDataSetDelegate = self
+        collectionView?.emptyDataSetSource = self
+        collectionView?.emptyDataSetDelegate = self
+        navigationController?.navigationBar.barTintColor = blueDarkColor
     }
 
     @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
@@ -80,7 +82,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 loadingCollection.leave()
                 loadingCollection.notify(queue: .main){
                     progressHUD.hide(animated: true)
-                    self.customizationOutlets(isEnable: true, color: .black)
+                    self.customizationOutlets(isEnable: true, color: .white)
                     self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
                 }
                 return
@@ -100,7 +102,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 }
                 
                 loadingCollection.notify(queue: .main){
-                    self.customizationOutlets(isEnable: true, color: .black)
+                    self.customizationOutlets(isEnable: true, color: .white)
+                    self.searchTextField.text?.removeAll()
                     progressHUD.hide(animated: true)
                 }
             }
@@ -135,8 +138,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         let titleText = "Not repositories to show"
         
         let attributes = [
-            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18),
-            NSForegroundColorAttributeName: UIColor.blue
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 16),
+            NSForegroundColorAttributeName: UIColor.lightGray
         ]
         
         return NSAttributedString.init(string: titleText, attributes: attributes)
