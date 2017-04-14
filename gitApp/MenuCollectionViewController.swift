@@ -30,7 +30,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         self.searchTextField.resignFirstResponder()
         let query = searchTextField.text?.trimmingCharacters(in: .whitespaces)
         if (query?.isEmpty)!{
-            self.presentAlertIncompleteInformation()
+            self.presentAlertWhenAccessToData(title: "Empty search",
+                                         message: "Complete with search term for the researching")
         } else {
             let searchTerm = query?.replacingOccurrences(of: " ", with: "-")
             searchTextField.text = searchTerm
@@ -39,9 +40,9 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         }
     }
     
-    func presentAlertIncompleteInformation(){
-        let alert = UIAlertController.init(title: "Empty search",
-                                           message: "Complete with search term for the researching",
+    func presentAlertWhenAccessToData(title:String, message: String){
+        let alert = UIAlertController.init(title: title,
+                                           message: message,
                                            preferredStyle: .alert)
         
         let defaultAction = UIAlertAction.init(title: "Ok",
@@ -66,15 +67,24 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         gitService.getRepositories(searchTerm: term) {
             results, error in
             
+            let loadingCollection = DispatchGroup()
+            loadingCollection.enter()
+            
             if let error = error {
                 print("Error searching : \(error)")
+                return
+            } else if (results?.isEmpty)! {
+                loadingCollection.leave()
+                loadingCollection.notify(queue: .main){
+                    progressHUD.hide(animated: true)
+                    self.customizationOutlets(isEnable: true, color: .black)
+                    self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
+                }
+                return
             } else {
                 self.repositoriesData = results!
                 
                 self.downloadedImages.removeAll()
-                
-                let loadingCollection = DispatchGroup()
-                loadingCollection.enter()
                 
                 DispatchQueue.main.async{
                     for (_, repository) in self.repositoriesData.enumerated() {
