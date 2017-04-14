@@ -8,10 +8,11 @@
 
 import UIKit
 import MBProgressHUD
+import DZNEmptyDataSet
 
 private let reuseIdentifier = "Cell"
 
-class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate {
+class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     private let gitService = GitService()
     private var repositoriesData = [Repository]()
@@ -24,6 +25,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         super.viewDidLoad()
         
         searchTextField.delegate = self
+        self.collectionView?.emptyDataSetSource = self
+        self.collectionView?.emptyDataSetDelegate = self
     }
 
     @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
@@ -123,4 +126,20 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         
         return cell
     }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        return UIImage.init(named: "repository")
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let titleText = "Not repositories to show"
+        
+        let attributes = [
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18),
+            NSForegroundColorAttributeName: UIColor.blue
+        ]
+        
+        return NSAttributedString.init(string: titleText, attributes: attributes)
+    }
+    
 }
