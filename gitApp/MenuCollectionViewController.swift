@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 private let reuseIdentifier = "Cell"
 
@@ -38,13 +39,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         }
     }
     
-    func customizationOutlets(isEnable:Bool, color:UIColor) {
-        self.searchTextField.isUserInteractionEnabled = isEnable
-        self.searchTextField.textColor = color
-        self.searchButton.isEnabled = isEnable
-        self.searchButton.tintColor = color
-    }
-    
     func presentAlertIncompleteInformation(){
         let alert = UIAlertController.init(title: "Empty search",
                                            message: "Complete with search term for the researching",
@@ -56,9 +50,19 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         alert.addAction(defaultAction)
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func customizationOutlets(isEnable:Bool, color:UIColor) {
+        self.searchTextField.isUserInteractionEnabled = isEnable
+        self.searchTextField.textColor = color
+        self.searchButton.isEnabled = isEnable
+        self.searchButton.tintColor = color
+    }
 
     func getGitData(term: String) -> Void {
-        
+        let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+        progressHUD.label.text = "Searching"
+        progressHUD.mode = .indeterminate
+
         gitService.getRepositories(searchTerm: term) {
             results, error in
             
@@ -84,6 +88,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 
                 loadingCollection.notify(queue: .main){
                     self.customizationOutlets(isEnable: true, color: .black)
+                    progressHUD.hide(animated: true)
                 }
             }
         }
