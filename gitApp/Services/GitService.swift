@@ -8,19 +8,22 @@
 
 import Foundation
 
-let GITHUB_REPOSITORIES_URL = "https://api.github.com/search/repositories?q=topic:"
+let GITHUB_REPOSITORIES_URL_TOPIC = "https://api.github.com/search/repositories?q=topic:"
+let GITHUB_REPOSITORIES_URL_ORDER = "&sort=stars&order=desc"
+let GITHUB_REPOSITORIES_URL_PERPAGE = "&per-page=30"
 
 class GitService: IRepositoryDataSource {
 
     /**
      @ref https://api.github.com/search/repositories?q=topic:helloworld&sort=stars&order=desc
      */
-    func getRepositories(searchTerm:String, completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void {
+    func getRepositories(searchTerm:String, pageNumber: String, completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void {
         
         var repositories = [Repository]()
         
-        var requestURL = URLRequest (url: URL (string: GITHUB_REPOSITORIES_URL + searchTerm + "&sort=stars&order=desc")!)
-
+        var requestURL = URLRequest (url: URL (string: GITHUB_REPOSITORIES_URL_TOPIC + searchTerm +
+                                    GITHUB_REPOSITORIES_URL_ORDER + "&page=" + pageNumber +
+                                    GITHUB_REPOSITORIES_URL_PERPAGE)!)
         
         requestURL.httpMethod = "GET"
         

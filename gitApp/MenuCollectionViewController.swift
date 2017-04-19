@@ -69,7 +69,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         progressHUD.label.text = "Searching"
         progressHUD.mode = .indeterminate
 
-        gitService.getRepositories(searchTerm: term) {
+        gitService.getRepositories(searchTerm: term, pageNumber: "1") {
             results, error in
             
             let loadingCollection = DispatchGroup()
