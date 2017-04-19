@@ -19,6 +19,11 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     private var repositoriesData = [Repository]()
     private var downloadedImages = [UIImage]()
     
+    private var pageNumber = 1
+    private var isLoading = false
+    private var searchActive = false
+    private var searchTerm = String()
+    
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet var searchButton: UIBarButtonItem!
 
@@ -38,10 +43,10 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             self.presentAlertWhenAccessToData(title: "Empty search",
                                          message: "Complete with search term for the researching")
         } else {
-            let searchTerm = query?.replacingOccurrences(of: " ", with: "-")
+            searchTerm = (query?.replacingOccurrences(of: " ", with: "-"))!
             searchTextField.text = searchTerm
             customizationOutlets(isEnable: false, color: UIColor.gray)
-            getGitData(term: searchTerm!)
+            getGitData()
         }
     }
     
@@ -64,12 +69,12 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         self.searchButton.tintColor = color
     }
 
-    func getGitData(term: String) -> Void {
+    func getGitData () -> Void {
         let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
         progressHUD.label.text = "Searching"
         progressHUD.mode = .indeterminate
 
-        gitService.getRepositories(searchTerm: term, pageNumber: "1") {
+        gitService.getRepositories(searchTerm: searchTerm, pageNumber: String(pageNumber)) {
             results, error in
             
             let loadingCollection = DispatchGroup()
@@ -78,7 +83,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             if let error = error {
                 print("Error searching : \(error)")
                 return
-            } else if (results?.isEmpty)! {
+                
+            } else if ((results?.isEmpty)! && !self.searchActive) {
                 loadingCollection.leave()
                 loadingCollection.notify(queue: .main){
                     progressHUD.hide(animated: true)
@@ -86,10 +92,25 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                     self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
                 }
                 return
-            } else {
-                self.repositoriesData = results!
                 
-                self.downloadedImages.removeAll()
+            } else if ((results?.isEmpty)! && self.searchActive) {
+                loadingCollection.leave()
+                loadingCollection.notify(queue: .main){
+                    self.searchActive = false
+                    progressHUD.hide(animated: true)
+                    self.customizationOutlets(isEnable: true, color: .white)
+                }
+                return
+                
+            } else {
+
+                if (self.isLoading) {
+                    self.repositoriesData += results!
+                    self.isLoading = false
+                } else {
+                    self.repositoriesData = results!
+                    self.downloadedImages.removeAll()
+                }
                 
                 DispatchQueue.main.async{
                     for (_, repository) in self.repositoriesData.enumerated() {
@@ -103,8 +124,9 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 
                 loadingCollection.notify(queue: .main){
                     self.customizationOutlets(isEnable: true, color: .white)
-                    self.searchTextField.text?.removeAll()
                     progressHUD.hide(animated: true)
+                    self.searchActive = true
+
                 }
             }
         }
@@ -143,6 +165,18 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         ]
         
         return NSAttributedString.init(string: titleText, attributes: attributes)
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.y
+        let maxOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        if (maxOffset - offset) <= 0 {
+            if (!isLoading && searchActive) {
+                isLoading = true
+                pageNumber += 1
+                getGitData()
+            }
+        }
     }
     
 }
