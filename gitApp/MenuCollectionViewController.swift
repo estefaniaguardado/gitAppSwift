@@ -23,6 +23,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     private var isLoading = false
     private var searchActive = false
     private var searchTerm = String()
+    private var resultsCount = Int()
     
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet var searchButton: UIBarButtonItem!
@@ -37,6 +38,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     }
 
     @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
+        self.isLoading = false
+        self.searchActive = false
         self.searchTextField.resignFirstResponder()
         let query = searchTextField.text?.trimmingCharacters(in: .whitespaces)
         if (query?.isEmpty)!{
@@ -103,21 +106,38 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 return
                 
             } else {
-
+                
+                var lastIndexResults = Int()
+                
                 if (self.isLoading) {
                     self.repositoriesData += results!
-                    self.isLoading = false
+                    lastIndexResults = self.resultsCount
+                    self.resultsCount += (results?.count)!
                 } else {
+                    self.repositoriesData.removeAll()
                     self.repositoriesData = results!
                     self.downloadedImages.removeAll()
+                    self.resultsCount = 0
+                    lastIndexResults = self.resultsCount
+                    self.resultsCount = (results?.count)!
                 }
                 
                 DispatchQueue.main.async{
-                    for (_, repository) in self.repositoriesData.enumerated() {
+                    
+                    var arrayIndexPath = [IndexPath]()
+
+                    for index in lastIndexResults...self.resultsCount - 1{
+                        let repository = self.repositoriesData[index]
                         self.downloadImageFromURL(imageURL: repository.ownerAvatar)
+                        arrayIndexPath.append((IndexPath.init(row: index, section: 0)))
                     }
                     
-                    self.collectionView?.reloadData()
+                    if (self.isLoading){
+                        self.collectionView?.insertItems(at: arrayIndexPath)
+                        self.isLoading = false
+                    } else{
+                        self.collectionView?.reloadData()
+                    }
 
                     loadingCollection.leave()
                 }
@@ -126,7 +146,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                     self.customizationOutlets(isEnable: true, color: .white)
                     progressHUD.hide(animated: true)
                     self.searchActive = true
-
                 }
             }
         }
