@@ -9,13 +9,15 @@
 import Foundation
 
 struct Repository {
+    var id: Int
     var repoName: String
     var language: String
     var forksCount: Int
     var ownerName: String
     var ownerAvatar: URL
 
-    init(name:String, repoLanguage: String, forks: Int, owner: String, imageURL: URL) {
+    init(identifier: Int, name: String, repoLanguage: String, forks: Int, owner: String, imageURL: URL) {
+        id = identifier
         repoName = name
         language = repoLanguage
         forksCount = forks

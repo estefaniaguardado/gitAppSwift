@@ -81,6 +81,8 @@ class GitService: IRepositoryDataSource {
         return false
     }
     
+    func initializeRepositoryData(id: Int, data: NSDictionary) -> Repository {
+        
         let itemName = data.value(forKey: "name") as! String
         let itemLanguage = (data.value(forKey: "language") as? String != nil) ?
                 data.value(forKey: "language") as! String : ""
@@ -90,6 +92,8 @@ class GitService: IRepositoryDataSource {
         let avatarOwner = (owner.value(forKey: "avatar_url") as? String != nil) ?
                 owner.value(forKey: "avatar_url") as! String : ""
             
+        return Repository.init(identifier: id, name: itemName, repoLanguage: itemLanguage,
+                               forks: itemForks, owner: loginOwner,
                                imageURL: URL.init(string: avatarOwner)!)
         
     }
