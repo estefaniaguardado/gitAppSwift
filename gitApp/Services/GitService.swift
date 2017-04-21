@@ -11,7 +11,7 @@ import Foundation
 let GITHUB_REPOSITORIES_URL_TOPIC = "https://api.github.com/search/repositories?q=topic:"
 let GITHUB_REPOSITORIES_URL_ORDER = "&sort=stars&order=desc"
 let GITHUB_REPOSITORIES_URL_PERPAGE = "&per-page=30"
-var setIds = Set<Int>()
+var setRepositories = Set<Repository>()
 
 class GitService: IRepositoryDataSource {
 
@@ -60,29 +60,22 @@ class GitService: IRepositoryDataSource {
         
         // TODO: Use map
         var repositoryArray = [Repository]()
-        
+
         for (_, item) in items.enumerated(){
-            let itemID = item.value(forKey: "id") as! Int
+            let repositoryData = self.initializeRepositoryData(data: item)
             
-            if !self.existRepository(id: itemID) {
-                repositoryArray.append(self.initializeRepositoryData(id: itemID, data: item))
+            if !setRepositories.contains(repositoryData) {
+                setRepositories.insert(repositoryData)
+                repositoryArray.append(repositoryData)
             }
         }
         
         return repositoryArray
     }
     
-    func existRepository(id: Int) -> Bool {
-        if setIds.contains(id) {
-            return true
-        }
+    func initializeRepositoryData(data: NSDictionary) -> Repository {
         
-        setIds.insert(id)
-        return false
-    }
-    
-    func initializeRepositoryData(id: Int, data: NSDictionary) -> Repository {
-        
+        let itemId = data.value(forKey: "id") as! Int
         let itemName = data.value(forKey: "name") as! String
         let itemLanguage = (data.value(forKey: "language") as? String != nil) ?
                 data.value(forKey: "language") as! String : ""
@@ -92,7 +85,7 @@ class GitService: IRepositoryDataSource {
         let avatarOwner = (owner.value(forKey: "avatar_url") as? String != nil) ?
                 owner.value(forKey: "avatar_url") as! String : ""
             
-        return Repository.init(identifier: id, name: itemName, repoLanguage: itemLanguage,
+        return Repository.init(identifier: itemId, name: itemName, repoLanguage: itemLanguage,
                                forks: itemForks, owner: loginOwner,
                                imageURL: URL.init(string: avatarOwner)!)
         

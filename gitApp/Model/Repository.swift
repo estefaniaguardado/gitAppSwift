@@ -26,3 +26,25 @@ struct Repository {
     }
 
 }
+
+extension Repository: Hashable {
+    
+    var hashValue: Int {
+        return id.hashValue | repoName.hashValue | ownerName.hashValue
+    }
+}
+
+extension Repository: Equatable {
+    
+    public static func ==(lhs: Repository, rhs: Repository) -> Bool {
+        var equatable = false
+        
+        equatable = lhs.id == rhs.id ? true : false
+        equatable = lhs.repoName == rhs.repoName ? true : false
+        equatable = lhs.ownerName == rhs.ownerName ? true : false
+
+        return equatable
+    }
+    
+
+}
