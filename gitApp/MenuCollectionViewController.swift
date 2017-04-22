@@ -50,6 +50,9 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             searchTerm = (query?.replacingOccurrences(of: " ", with: "-"))!
             searchTextField.text = searchTerm
             customizationOutlets(isEnable: false, color: UIColor.gray)
+            self.repositoriesData.removeAll()
+            self.downloadedImages.removeAll()
+            self.resultsCount = 0
             getGitData()
         }
     }
@@ -124,21 +127,9 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
 
             } else {
 
-                var lastIndexResults: Int
-
-                if (self.isLoading) {
-                    self.repositoriesData += results!
-                    lastIndexResults = self.resultsCount
-                    self.resultsCount += (results?.count)!
-                } else {
-                    // TODO: Move repositories cached to the Search Action
-                    self.repositoriesData.removeAll()
-                    self.repositoriesData = results!
-                    self.downloadedImages.removeAll()
-                    self.resultsCount = 0
-                    lastIndexResults = self.resultsCount
-                    self.resultsCount = (results?.count)!
-                }
+                let lastIndexResults: Int = self.resultsCount
+                self.resultsCount += (results?.count)!
+                self.repositoriesData += results!
 
                 DispatchQueue.main.async {
 
@@ -153,7 +144,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                     print("Indexpaths: \(arrayIndexPath)")
 
                     // Use variable based on view model and not based on view flag
-                    if (self.isLoading) {
+                    if (lastIndexResults > 0) {
                         self.collectionView?.insertItems(at: arrayIndexPath)
                         self.isLoading = false
                     } else {
