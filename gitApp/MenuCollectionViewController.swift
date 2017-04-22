@@ -25,6 +25,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     private var searchTerm = String()
     private var resultsCount = Int()
     private var setTest = Set<Repository>()
+    private let loadingCollection = DispatchGroup()
+    private var progressHUD = MBProgressHUD()
 
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet var searchButton: UIBarButtonItem!
@@ -77,102 +79,100 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     }
 
     func getGitData() -> Void {
-        let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
-        progressHUD.label.text = "Searching"
-        progressHUD.mode = .indeterminate
 
         gitService.getRepositories(searchTerm: searchTerm, pageNumber: String(pageNumber)) {
             results, error in
 
-
             DispatchQueue.main.async {
 
-                let loadingCollection = DispatchGroup()
-                loadingCollection.enter()
+                self.loadingCollection.enter()
 
-                // TODO: Extract methods to simplify the view logic
-
-                /*let isEmpty = XXX
-                let continueScrolling = XXXX
-
-                if (error) return presentError(error);
-
-                if(isEmpty) return presentEmptyAlert();
-                if(continueScrolling) return XXX();*/
+                //TODO: Fix progressHUD view
+                self.progressHUD.label.text = "Searching"
+                self.progressHUD.mode = .indeterminate
+                self.progressHUD = .showAdded(to: self.view, animated: true)
 
                 let isEmptyResults = (results?.isEmpty)! && !self.searchActive
                 let existResults = isEmptyResults == false ? true : false
                 let isSearchFinished = (results?.isEmpty)! && self.searchActive
 
                 if let error = error {
-                    print("Error searching : \(error)")
-                    return
-
+                    return print("Error searching : \(error)")
                 }
 
                 if (isEmptyResults) {
-                    loadingCollection.leave()
-                    loadingCollection.notify(queue: .main) {
-                        progressHUD.hide(animated: true)
-                        self.customizationOutlets(isEnable: true, color: .white)
-                        self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
-                    }
-                    return
-
+                    return self.presentAlertOfEmptyResults()
                 }
 
                 if (isSearchFinished) {
-                    loadingCollection.leave()
-                    loadingCollection.notify(queue: .main) {
-                        self.searchActive = false
-                        progressHUD.hide(animated: true)
-                        self.customizationOutlets(isEnable: true, color: .white)
-                    }
-                    return
-
+                    return self.enableElementsInView()
                 }
 
                 if (existResults) {
-
                     let lastIndexResults: Int = self.resultsCount
-                    self.resultsCount += (results?.count)!
-                    self.repositoriesData += results!
-
-                    var arrayIndexPath = [IndexPath]()
-
-                    for index in lastIndexResults...self.resultsCount - 1 {
-                        let repository = self.repositoriesData[index]
-                        self.downloadImageFromURL(imageURL: repository.ownerAvatar)
-                        arrayIndexPath.append((IndexPath.init(row: index, section: 0)))
-                    }
-
-                    if (lastIndexResults > 0) {
-                        self.collectionView?.insertItems(at: arrayIndexPath)
-                        self.isLoading = false
-                    } else {
-                        self.collectionView?.reloadData()
-                    }
-
-                    loadingCollection.leave()
-                }
-
-                loadingCollection.notify(queue: .main) {
-                    self.customizationOutlets(isEnable: true, color: .white)
-                    progressHUD.hide(animated: true)
-                    self.searchActive = true
+                    return self.reloadRepositoriesData(byLastIndex: lastIndexResults, dataResults: results!)
                 }
             }
         }
-
     }
 
-    func presentAlert() {
+    func presentAlertOfEmptyResults() {
+        loadingCollection.leave()
+        loadingCollection.notify(queue: .main) {
+            self.customizationOutlets(isEnable: true, color: .white)
+            self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
+            self.progressHUD.hide(animated: true)
+        }
+    }
 
+    func enableElementsInView() {
+        self.loadingCollection.leave()
+        self.loadingCollection.notify(queue: .main) {
+            self.searchActive = false
+            self.customizationOutlets(isEnable: true, color: .black)
+            self.progressHUD.hide(animated: true)
+        }
+    }
+
+    func arrayIndexPath(by: Int) -> [IndexPath] {
+        var array = [IndexPath]()
+
+        for index in by...self.resultsCount - 1 {
+            array.append((IndexPath.init(row: index, section: 0)))
+        }
+
+        return array
     }
 
     func downloadImageFromURL(imageURL: URL) {
         let imageData = NSData(contentsOf: imageURL)!
         downloadedImages.append(UIImage(data: imageData as Data)!)
+    }
+
+    func reloadRepositoriesData(byLastIndex: Int, dataResults: [Repository]) {
+
+        self.resultsCount += (dataResults.count)
+        self.repositoriesData += dataResults
+
+        //TODO: Change method of downloading images
+        for index in byLastIndex...self.resultsCount - 1 {
+            let repository = self.repositoriesData[index]
+            self.downloadImageFromURL(imageURL: repository.ownerAvatar)
+        }
+
+        if (byLastIndex > 0) {
+            self.collectionView?.insertItems(at: self.arrayIndexPath(by: byLastIndex))
+            self.isLoading = false
+        } else {
+            self.collectionView?.reloadData()
+        }
+
+        self.loadingCollection.leave()
+        self.loadingCollection.notify(queue: .main) {
+            self.customizationOutlets(isEnable: true, color: .black)
+            self.searchActive = true
+            self.progressHUD.hide(animated: true)
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
