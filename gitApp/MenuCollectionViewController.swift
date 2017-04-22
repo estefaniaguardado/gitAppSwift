@@ -85,53 +85,58 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             results, error in
 
 
-            // DISPATCH
+            DispatchQueue.main.async {
 
-            let loadingCollection = DispatchGroup()
-            loadingCollection.enter()
+                let loadingCollection = DispatchGroup()
+                loadingCollection.enter()
 
-            // TODO: Extract methods to simplify the view logic
+                // TODO: Extract methods to simplify the view logic
 
-            /*let isEmpty = XXX
-            let continueScrolling = XXXX
-            
-            if (error) return presentError(error);
+                /*let isEmpty = XXX
+                let continueScrolling = XXXX
 
-            if(isEmpty) return presentEmptyAlert();
-            if(continueScrolling) return XXX();*/
+                if (error) return presentError(error);
 
+                if(isEmpty) return presentEmptyAlert();
+                if(continueScrolling) return XXX();*/
 
-            let isEmpty = (results?.isEmpty)! && !self.searchActive
-            let noSeEnSerio = (results?.isEmpty)! && self.searchActive
-            if let error = error {
-                print("Error searching : \(error)")
-                return
+                let isEmptyResults = (results?.isEmpty)! && !self.searchActive
+                let existResults = isEmptyResults == false ? true : false
+                let isSearchFinished = (results?.isEmpty)! && self.searchActive
 
-            } else if (isEmpty) {
-                loadingCollection.leave()
-                loadingCollection.notify(queue: .main) {
-                    progressHUD.hide(animated: true)
-                    self.customizationOutlets(isEnable: true, color: .white)
-                    self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
+                if let error = error {
+                    print("Error searching : \(error)")
+                    return
+
                 }
-                return
 
-            } else if (noSeEnSerio) {
-                loadingCollection.leave()
-                loadingCollection.notify(queue: .main) {
-                    self.searchActive = false
-                    progressHUD.hide(animated: true)
-                    self.customizationOutlets(isEnable: true, color: .white)
+                if (isEmptyResults) {
+                    loadingCollection.leave()
+                    loadingCollection.notify(queue: .main) {
+                        progressHUD.hide(animated: true)
+                        self.customizationOutlets(isEnable: true, color: .white)
+                        self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
+                    }
+                    return
+
                 }
-                return
 
-            } else {
+                if (isSearchFinished) {
+                    loadingCollection.leave()
+                    loadingCollection.notify(queue: .main) {
+                        self.searchActive = false
+                        progressHUD.hide(animated: true)
+                        self.customizationOutlets(isEnable: true, color: .white)
+                    }
+                    return
 
-                let lastIndexResults: Int = self.resultsCount
-                self.resultsCount += (results?.count)!
-                self.repositoriesData += results!
+                }
 
-                DispatchQueue.main.async {
+                if (existResults) {
+
+                    let lastIndexResults: Int = self.resultsCount
+                    self.resultsCount += (results?.count)!
+                    self.repositoriesData += results!
 
                     var arrayIndexPath = [IndexPath]()
 
@@ -141,9 +146,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                         arrayIndexPath.append((IndexPath.init(row: index, section: 0)))
                     }
 
-                    print("Indexpaths: \(arrayIndexPath)")
-
-                    // Use variable based on view model and not based on view flag
                     if (lastIndexResults > 0) {
                         self.collectionView?.insertItems(at: arrayIndexPath)
                         self.isLoading = false
