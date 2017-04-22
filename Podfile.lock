@@ -1,15 +1,15 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
-  - MBProgressHUD (1.0.0)
+  - JDStatusBarNotification (1.5.4)
 
 DEPENDENCIES:
   - DZNEmptyDataSet
-  - MBProgressHUD (~> 1.0.0)
+  - JDStatusBarNotification
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  JDStatusBarNotification: d47dded0594a50a39c84a2cc5aa356fcf6750d0e
 
-PODFILE CHECKSUM: 5669893b5929c4357e24f742ad471e0f566c3392
+PODFILE CHECKSUM: cd5ef35182d6a91304461dc5db69efb02f033502
 
 COCOAPODS: 1.2.1
