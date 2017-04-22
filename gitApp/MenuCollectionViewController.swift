@@ -8,6 +8,7 @@
 
 import UIKit
 import DZNEmptyDataSet
+import JDStatusBarNotification
 
 private let reuseIdentifier = "Cell"
 private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, alpha: 0) //26.82.118
@@ -28,6 +29,29 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
 
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet var searchButton: UIBarButtonItem!
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    public override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
+
+        self.title = String.init("JDStatusBarNotification")
+
+        JDStatusBarNotification.addStyleNamed("statusLoading") {
+            style in
+
+            style?.barColor = UIColor.gray
+            style?.textColor = UIColor.white
+            style?.animationType = .bounce
+            style?.progressBarHeight = 5.0
+            style?.progressBarPosition = .below
+
+            return style
+        }
+
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,14 +102,14 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
 
     func getGitData() -> Void {
 
+        JDStatusBarNotification.show(withStatus: "Loading...")
+
         gitService.getRepositories(searchTerm: searchTerm, pageNumber: String(pageNumber)) {
             results, error in
 
             DispatchQueue.main.async {
 
                 self.loadingCollection.enter()
-
-                //TODO: Fix progressHUD view
 
                 let isEmptyResults = (results?.isEmpty)! && !self.searchActive
                 let existResults = isEmptyResults == false ? true : false
@@ -116,6 +140,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         loadingCollection.notify(queue: .main) {
             self.customizationOutlets(isEnable: true, color: .white)
             self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
+            JDStatusBarNotification.dismiss()
         }
     }
 
@@ -124,6 +149,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         self.loadingCollection.notify(queue: .main) {
             self.searchActive = false
             self.customizationOutlets(isEnable: true, color: .black)
+            JDStatusBarNotification.dismiss()
         }
     }
 
@@ -164,6 +190,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         self.loadingCollection.notify(queue: .main) {
             self.customizationOutlets(isEnable: true, color: .black)
             self.searchActive = true
+            JDStatusBarNotification.dismiss()
         }
     }
 

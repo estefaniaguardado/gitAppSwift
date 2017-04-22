@@ -5,6 +5,7 @@ target 'gitApp' do
   use_frameworks!
 
   pod 'DZNEmptyDataSet'
+  pod 'JDStatusBarNotification'
 
   # Pods for gitApp
 

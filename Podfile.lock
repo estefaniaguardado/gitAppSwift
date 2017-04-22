@@ -1,12 +1,15 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
+  - JDStatusBarNotification (1.5.4)
 
 DEPENDENCIES:
   - DZNEmptyDataSet
+  - JDStatusBarNotification
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  JDStatusBarNotification: d47dded0594a50a39c84a2cc5aa356fcf6750d0e
 
-PODFILE CHECKSUM: 06bd83d1e72bc4131d464f78be6b012b30338971
+PODFILE CHECKSUM: cd5ef35182d6a91304461dc5db69efb02f033502
 
 COCOAPODS: 1.2.1
