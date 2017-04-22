@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MBProgressHUD
 import DZNEmptyDataSet
 
 private let reuseIdentifier = "Cell"
@@ -26,7 +25,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     private var resultsCount = Int()
     private var setTest = Set<Repository>()
     private let loadingCollection = DispatchGroup()
-    private var progressHUD = MBProgressHUD()
 
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet var searchButton: UIBarButtonItem!
@@ -88,9 +86,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
                 self.loadingCollection.enter()
 
                 //TODO: Fix progressHUD view
-                self.progressHUD.label.text = "Searching"
-                self.progressHUD.mode = .indeterminate
-                self.progressHUD = .showAdded(to: self.view, animated: true)
 
                 let isEmptyResults = (results?.isEmpty)! && !self.searchActive
                 let existResults = isEmptyResults == false ? true : false
@@ -121,7 +116,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         loadingCollection.notify(queue: .main) {
             self.customizationOutlets(isEnable: true, color: .white)
             self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
-            self.progressHUD.hide(animated: true)
         }
     }
 
@@ -130,7 +124,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         self.loadingCollection.notify(queue: .main) {
             self.searchActive = false
             self.customizationOutlets(isEnable: true, color: .black)
-            self.progressHUD.hide(animated: true)
         }
     }
 
@@ -171,7 +164,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         self.loadingCollection.notify(queue: .main) {
             self.customizationOutlets(isEnable: true, color: .black)
             self.searchActive = true
-            self.progressHUD.hide(animated: true)
         }
     }
 

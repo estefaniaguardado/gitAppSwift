@@ -4,7 +4,6 @@
 target 'gitApp' do
   use_frameworks!
 
-  pod 'MBProgressHUD', '~> 1.0.0'
   pod 'DZNEmptyDataSet'
 
   # Pods for gitApp
