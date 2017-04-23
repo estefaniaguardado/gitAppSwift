@@ -6,6 +6,7 @@ target 'gitApp' do
 
   pod 'DZNEmptyDataSet'
   pod 'JDStatusBarNotification'
+  pod 'Kingfisher', '~> 3.0'
 
   # Pods for gitApp
 

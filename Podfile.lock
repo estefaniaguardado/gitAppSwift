@@ -1,15 +1,18 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
   - JDStatusBarNotification (1.5.4)
+  - Kingfisher (3.1.1)
 
 DEPENDENCIES:
   - DZNEmptyDataSet
   - JDStatusBarNotification
+  - Kingfisher (~> 3.0)
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   JDStatusBarNotification: d47dded0594a50a39c84a2cc5aa356fcf6750d0e
+  Kingfisher: 12b755ae697cc9f0fd3e550db8417fa1233e09ab
 
-PODFILE CHECKSUM: cd5ef35182d6a91304461dc5db69efb02f033502
+PODFILE CHECKSUM: f88f8a916d6dd2581846f52c2461e3fe86aa3abb
 
 COCOAPODS: 1.2.1
