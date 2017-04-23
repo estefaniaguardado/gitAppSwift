@@ -9,6 +9,7 @@
 import UIKit
 import DZNEmptyDataSet
 import JDStatusBarNotification
+import Kingfisher
 
 private let reuseIdentifier = "Cell"
 private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, alpha: 0) //26.82.118
@@ -17,14 +18,12 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
 
     private let gitService = GitService()
     private var repositoriesData = [Repository]()
-    private var downloadedImages = [UIImage]()
 
     private var pageNumber = 1
     private var isLoading = false
     private var searchActive = false
     private var searchTerm = String()
     private var resultsCount = Int()
-    private var setTest = Set<Repository>()
     private let loadingCollection = DispatchGroup()
 
     @IBOutlet weak var searchTextField: UITextField!
@@ -75,8 +74,9 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             searchTextField.text = searchTerm
             customizationOutlets(isEnable: false, color: UIColor.gray)
             self.repositoriesData.removeAll()
-            self.downloadedImages.removeAll()
             self.resultsCount = 0
+            KingfisherManager.shared.cache.clearMemoryCache()
+            KingfisherManager.shared.cache.clearDiskCache()
             getGitData()
         }
     }
@@ -163,21 +163,10 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         return array
     }
 
-    func downloadImageFromURL(imageURL: URL) {
-        let imageData = NSData(contentsOf: imageURL)!
-        downloadedImages.append(UIImage(data: imageData as Data)!)
-    }
-
     func reloadRepositoriesData(byLastIndex: Int, dataResults: [Repository]) {
 
         self.resultsCount += (dataResults.count)
         self.repositoriesData += dataResults
-
-        //TODO: Change method of downloading images
-        for index in byLastIndex...self.resultsCount - 1 {
-            let repository = self.repositoriesData[index]
-            self.downloadImageFromURL(imageURL: repository.ownerAvatar)
-        }
 
         if (byLastIndex > 0) {
             self.collectionView?.insertItems(at: self.arrayIndexPath(by: byLastIndex))
@@ -198,12 +187,30 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         return repositoriesData.count
     }
 
+    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        (cell as! RepositoryCollectionViewCell).ownerImage.kf.cancelDownloadTask()
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
+        let viewCellData = repositoriesData[indexPath.row]
+
+        _ = (cell as! RepositoryCollectionViewCell).ownerImage.kf.setImage(with: viewCellData.ownerAvatar,
+                placeholder: nil, options: [.transition(ImageTransition.fade(1))],
+                progressBlock: { receivedSize, totalSize in
+                    print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
+                },
+                completionHandler: { image, error, cacheType, imageURL in
+                    print("\(indexPath.row + 1): Finished")
+                })
+    }
+
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let viewCellData = repositoriesData[indexPath.row]
-        let imageOwnerRepository = downloadedImages[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! RepositoryCollectionViewCell
-        cell.setData(repositoryData: viewCellData, imageOwner: imageOwnerRepository)
+        cell.setData(repositoryData: viewCellData)
+        cell.ownerImage.kf.indicatorType = .activity
 
         return cell
     }
