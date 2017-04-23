@@ -72,7 +72,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         } else {
             searchTerm = (query?.replacingOccurrences(of: " ", with: "-"))!
             searchTextField.text = searchTerm
-            customizationOutlets(isEnable: false, color: UIColor.gray)
+            customizationOutlets(isEnable: false, color: .gray)
             self.repositoriesData.removeAll()
             self.resultsCount = 0
             KingfisherManager.shared.cache.clearMemoryCache()
@@ -97,7 +97,6 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         self.searchTextField.isUserInteractionEnabled = isEnable
         self.searchTextField.textColor = color
         self.searchButton.isEnabled = isEnable
-        self.searchButton.tintColor = color
     }
 
     func getGitData() -> Void {
@@ -138,8 +137,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     func presentAlertOfEmptyResults() {
         loadingCollection.leave()
         loadingCollection.notify(queue: .main) {
-            self.customizationOutlets(isEnable: true, color: .white)
             self.presentAlertWhenAccessToData(title: "Don't found results", message: "")
+            self.customizationOutlets(isEnable: true, color: .black)
             JDStatusBarNotification.dismiss()
         }
     }
@@ -148,8 +147,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         self.loadingCollection.leave()
         self.loadingCollection.notify(queue: .main) {
             self.searchActive = false
-            self.customizationOutlets(isEnable: true, color: .black)
             JDStatusBarNotification.dismiss()
+            self.customizationOutlets(isEnable: true, color: .black)
         }
     }
 
@@ -173,13 +172,15 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             self.isLoading = false
         } else {
             self.collectionView?.reloadData()
+            collectionViewLayout.collectionView?.scrollToItem(at: IndexPath.init(row: 0, section: 0),
+                    at: .top, animated: true)
         }
 
         self.loadingCollection.leave()
         self.loadingCollection.notify(queue: .main) {
-            self.customizationOutlets(isEnable: true, color: .black)
             self.searchActive = true
             JDStatusBarNotification.dismiss()
+            self.customizationOutlets(isEnable: true, color: .black)
         }
     }
 
