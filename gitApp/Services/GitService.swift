@@ -8,19 +8,23 @@
 
 import Foundation
 
-let GITHUB_REPOSITORIES_URL = "https://api.github.com/search/repositories?q=topic:"
+let GITHUB_REPOSITORIES_URL_TOPIC = "https://api.github.com/search/repositories?q=topic:"
+let GITHUB_REPOSITORIES_URL_ORDER = "&sort=stars&order=desc"
+let GITHUB_REPOSITORIES_URL_PERPAGE = "&per-page=30"
+var setRepositories = Set<Repository>()
 
 class GitService: IRepositoryDataSource {
 
     /**
      @ref https://api.github.com/search/repositories?q=topic:helloworld&sort=stars&order=desc
      */
-    func getRepositories(searchTerm:String, completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void {
+    func getRepositories(searchTerm:String, pageNumber: String, completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void {
         
         var repositories = [Repository]()
         
-        var requestURL = URLRequest (url: URL (string: GITHUB_REPOSITORIES_URL + searchTerm + "&sort=stars&order=desc")!)
-
+        var requestURL = URLRequest (url: URL (string: GITHUB_REPOSITORIES_URL_TOPIC + searchTerm +
+                                    GITHUB_REPOSITORIES_URL_ORDER + "&page=" + pageNumber +
+                                    GITHUB_REPOSITORIES_URL_PERPAGE)!)
         
         requestURL.httpMethod = "GET"
         
@@ -56,28 +60,33 @@ class GitService: IRepositoryDataSource {
         
         // TODO: Use map
         var repositoryArray = [Repository]()
-        
+
         for (_, item) in items.enumerated(){
-            repositoryArray.append(self.initializeRepositoryData(data: item))
+            let repositoryData = self.initializeRepositoryData(data: item)
+            
+            if !setRepositories.contains(repositoryData) {
+                setRepositories.insert(repositoryData)
+                repositoryArray.append(repositoryData)
+            }
         }
         
         return repositoryArray
     }
     
     func initializeRepositoryData(data: NSDictionary) -> Repository {
+        
+        let itemId = data.value(forKey: "id") as! Int
         let itemName = data.value(forKey: "name") as! String
         let itemLanguage = (data.value(forKey: "language") as? String != nil) ?
-                            data.value(forKey: "language") as! String : ""
+                data.value(forKey: "language") as! String : ""
         let itemForks = data.value(forKey: "forks_count") as! Int
         let owner = data.value(forKey: "owner") as! NSDictionary
         let loginOwner = owner.value(forKey: "login") as! String
         let avatarOwner = (owner.value(forKey: "avatar_url") as? String != nil) ?
-                           owner.value(forKey: "avatar_url") as! String : ""
-        
-        return Repository.init(name: itemName,
-                               repoLanguage: itemLanguage,
-                               forks: itemForks,
-                               owner: loginOwner,
+                owner.value(forKey: "avatar_url") as! String : ""
+            
+        return Repository.init(identifier: itemId, name: itemName, repoLanguage: itemLanguage,
+                               forks: itemForks, owner: loginOwner,
                                imageURL: URL.init(string: avatarOwner)!)
         
     }

@@ -9,6 +9,6 @@
 import Foundation
 
 protocol IRepositoryDataSource {
-    func getRepositories(searchTerm:String, completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void
-
+    func getRepositories(searchTerm:String, pageNumber: String,
+                         completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void
 }
