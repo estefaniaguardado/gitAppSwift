@@ -10,6 +10,7 @@ import UIKit
 import DZNEmptyDataSet
 import JDStatusBarNotification
 import Kingfisher
+import CoreData
 
 private let reuseIdentifier = "Cell"
 private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, alpha: 0) //26.82.118
@@ -17,7 +18,8 @@ private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, 
 class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     private let gitService = GitService()
-    private var repositoriesData = [Repository]()
+    private var repositoriesData: [NSManagedObject] = []// = [Repository]()
+    private var arrayRepository = [Repository]()
 
     private var pageNumber = 1
     private var isLoading = false
@@ -73,7 +75,8 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             searchTerm = (query?.replacingOccurrences(of: " ", with: "-"))!
             searchTextField.text = searchTerm
             customizationOutlets(isEnable: false, color: .gray)
-            self.repositoriesData.removeAll()
+            self.arrayRepository.removeAll()
+            //self.repositoriesData.removeAll()
             self.resultsCount = 0
             KingfisherManager.shared.cache.clearMemoryCache()
             KingfisherManager.shared.cache.clearDiskCache()
@@ -165,7 +168,12 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     func reloadRepositoriesData(byLastIndex: Int, dataResults: [Repository]) {
 
         self.resultsCount += (dataResults.count)
-        self.repositoriesData += dataResults
+
+        for (_, dataRepository) in dataResults.enumerated() {
+            save(data: dataRepository)
+        }
+
+        self.arrayRepository += dataResults
 
         if (byLastIndex > 0) {
             self.collectionView?.insertItems(at: self.arrayIndexPath(by: byLastIndex))
@@ -184,6 +192,30 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         }
     }
 
+    func save(data: Repository){
+        guard let appDelegate =
+        UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        let entity = NSEntityDescription.entity(forEntityName: "RepositoryData", in: managedContext)!
+
+        let repository = NSManagedObject.init(entity: entity, insertInto: managedContext)
+
+        repository.setValuesForKeys(["id": data.id, "repoName": data.repoName, "ownerName": data.ownerName,
+                                     "ownerAvatar": data.ownerAvatar, "language": data.language, "forksCount": data.forksCount])
+
+        do {
+            try managedContext.save()
+            repositoriesData.append(repository)
+        } catch let error as NSError {
+            print("Could dont save: \(error), \(error.userInfo)")
+        }
+
+    }
+
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return repositoriesData.count
     }
@@ -194,9 +226,10 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
 
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 
-        let viewCellData = repositoriesData[indexPath.row]
+        let viewCellData = arrayRepository[indexPath.row]
+        let urlAvatar = URL.init(string: viewCellData.ownerAvatar)
 
-        _ = (cell as! RepositoryCollectionViewCell).ownerImage.kf.setImage(with: viewCellData.ownerAvatar,
+        _ = (cell as! RepositoryCollectionViewCell).ownerImage.kf.setImage(with: urlAvatar,
                 placeholder: nil, options: [.transition(ImageTransition.fade(1))],
                 progressBlock: { receivedSize, totalSize in
                     print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
@@ -208,7 +241,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let viewCellData = repositoriesData[indexPath.row]
+        let viewCellData = arrayRepository[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! RepositoryCollectionViewCell
         cell.setData(repositoryData: viewCellData)
         cell.ownerImage.kf.indicatorType = .activity
