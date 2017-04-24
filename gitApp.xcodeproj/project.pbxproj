@@ -18,6 +18,7 @@
 		CAB2E2B31E8E81C7000B773D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAB2E2B11E8E81C7000B773D /* LaunchScreen.storyboard */; };
 		CAB2E2BE1E8E81C7000B773D /* gitAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2BD1E8E81C7000B773D /* gitAppTests.swift */; };
 		CAB2E2C91E8E81C8000B773D /* gitAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2C81E8E81C8000B773D /* gitAppUITests.swift */; };
+		CAEC64111EADF2EF00C032DA /* gitApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CAEC640F1EADF2EF00C032DA /* gitApp.xcdatamodeld */; };
 		CAF1A5D41E9906130075C02D /* GitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D31E9906130075C02D /* GitService.swift */; };
 		CAF1A5D61E99061D0075C02D /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D51E99061D0075C02D /* Repository.swift */; };
 		CAF1A5D81E9906270075C02D /* IRepositoryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D71E9906270075C02D /* IRepositoryDatasource.swift */; };
@@ -62,6 +63,7 @@
 		CAB2E2C41E8E81C7000B773D /* gitAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = gitAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAB2E2C81E8E81C8000B773D /* gitAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gitAppUITests.swift; sourceTree = "<group>"; };
 		CAB2E2CA1E8E81C8000B773D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CAEC64101EADF2EF00C032DA /* gitApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = gitApp.xcdatamodel; sourceTree = "<group>"; };
 		CAF1A5D31E9906130075C02D /* GitService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GitService.swift; path = Services/GitService.swift; sourceTree = "<group>"; };
 		CAF1A5D51E99061D0075C02D /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Repository.swift; path = Model/Repository.swift; sourceTree = "<group>"; };
 		CAF1A5D71E9906270075C02D /* IRepositoryDatasource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IRepositoryDatasource.swift; path = Protocols/IRepositoryDatasource.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				CAB2E2AF1E8E81C7000B773D /* Assets.xcassets */,
 				CAB2E2B11E8E81C7000B773D /* LaunchScreen.storyboard */,
 				CAB2E2B41E8E81C7000B773D /* Info.plist */,
+				CAEC640F1EADF2EF00C032DA /* gitApp.xcdatamodeld */,
 			);
 			path = gitApp;
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				CAF1A5D81E9906270075C02D /* IRepositoryDatasource.swift in Sources */,
 				CA620AA51E9235890078D888 /* MenuCollectionViewController.swift in Sources */,
 				CAF1A5D61E99061D0075C02D /* Repository.swift in Sources */,
+				CAEC64111EADF2EF00C032DA /* gitApp.xcdatamodeld in Sources */,
 				CA620AA71E9237250078D888 /* RepositoryCollectionViewCell.swift in Sources */,
 				CAF1A5D41E9906130075C02D /* GitService.swift in Sources */,
 				CAB2E2A91E8E81C7000B773D /* AppDelegate.swift in Sources */,
@@ -761,6 +765,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		CAEC640F1EADF2EF00C032DA /* gitApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CAEC64101EADF2EF00C032DA /* gitApp.xcdatamodel */,
+			);
+			currentVersion = CAEC64101EADF2EF00C032DA /* gitApp.xcdatamodel */;
+			name = gitApp.xcdatamodeld;
+			path = CoreData/gitApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = CAB2E29D1E8E81C7000B773D /* Project object */;
 }
