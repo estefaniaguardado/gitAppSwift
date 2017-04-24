@@ -11,5 +11,4 @@ import Foundation
 protocol IRepositoryDataSource {
     func getRepositories(searchTerm:String, pageNumber: String,
                          completion:@escaping (_ repositoriesData: Array<Repository>?, _ error:NSError?) -> Void) -> Void
-    func save(data: Repository) -> Void
 }
