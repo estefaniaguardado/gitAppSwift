@@ -62,6 +62,15 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         collectionView?.emptyDataSetDelegate = self
         navigationController?.navigationBar.barTintColor = blueDarkColor
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.repositoriesData = coreDataHandler.fetchRepositoriesData()
+        if !repositoriesData.isEmpty {
+            self.collectionView?.reloadData()
+        }
+    }
 
     @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
         self.isLoading = false
@@ -77,6 +86,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             customizationOutlets(isEnable: false, color: .gray)
             self.repositoriesData.removeAll()
             self.resultsCount = 0
+            coreDataHandler.deleteRepositoriesData()
             KingfisherManager.shared.cache.clearMemoryCache()
             KingfisherManager.shared.cache.clearDiskCache()
             getGitData()
