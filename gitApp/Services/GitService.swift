@@ -92,8 +92,7 @@ class GitService: IRepositoryDataSource {
                 owner.value(forKey: "avatar_url") as! String : ""
 
         return Repository.init(identifier: itemId, name: itemName, repoLanguage: itemLanguage,
-                forks: itemForks, owner: loginOwner,
-                imageURL: URL.init(string: avatarOwner)!)
+                forks: itemForks, owner: loginOwner, imageURL: avatarOwner)
 
     }
 

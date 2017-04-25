@@ -10,6 +10,7 @@ import UIKit
 import DZNEmptyDataSet
 import JDStatusBarNotification
 import Kingfisher
+import CoreData
 
 private let reuseIdentifier = "Cell"
 private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, alpha: 0) //26.82.118
@@ -17,6 +18,7 @@ private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, 
 class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     private let gitService = GitService()
+    private let coreDataHandler = CoreDataHandler()
     private var repositoriesData = [Repository]()
 
     private var pageNumber = 1
@@ -60,6 +62,15 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         collectionView?.emptyDataSetDelegate = self
         navigationController?.navigationBar.barTintColor = blueDarkColor
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.repositoriesData = coreDataHandler.fetchRepositoriesData()
+        if !repositoriesData.isEmpty {
+            self.collectionView?.reloadData()
+        }
+    }
 
     @IBAction func tappedSearch(_ sender: UIBarButtonItem) {
         self.isLoading = false
@@ -75,6 +86,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             customizationOutlets(isEnable: false, color: .gray)
             self.repositoriesData.removeAll()
             self.resultsCount = 0
+            coreDataHandler.deleteRepositoriesData()
             KingfisherManager.shared.cache.clearMemoryCache()
             KingfisherManager.shared.cache.clearDiskCache()
             getGitData()
@@ -164,6 +176,10 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
 
     func reloadRepositoriesData(byLastIndex: Int, dataResults: [Repository]) {
 
+        for (_, dataRepository) in dataResults.enumerated() {
+            coreDataHandler.saveRepositoriesData(data: dataRepository)
+        }
+
         self.resultsCount += (dataResults.count)
         self.repositoriesData += dataResults
 
@@ -195,8 +211,9 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 
         let viewCellData = repositoriesData[indexPath.row]
+        let urlAvatar = URL.init(string: viewCellData.ownerAvatar)
 
-        _ = (cell as! RepositoryCollectionViewCell).ownerImage.kf.setImage(with: viewCellData.ownerAvatar,
+        _ = (cell as! RepositoryCollectionViewCell).ownerImage.kf.setImage(with: urlAvatar,
                 placeholder: nil, options: [.transition(ImageTransition.fade(1))],
                 progressBlock: { receivedSize, totalSize in
                     print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")

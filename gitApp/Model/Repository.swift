@@ -14,9 +14,9 @@ struct Repository {
     var language: String
     var forksCount: Int
     var ownerName: String
-    var ownerAvatar: URL
+    var ownerAvatar: String
 
-    init(identifier: Int, name: String, repoLanguage: String, forks: Int, owner: String, imageURL: URL) {
+    init(identifier: Int, name: String, repoLanguage: String, forks: Int, owner: String, imageURL: String) {
         id = identifier
         repoName = name
         language = repoLanguage
