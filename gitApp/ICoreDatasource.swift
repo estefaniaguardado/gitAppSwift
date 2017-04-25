@@ -6,5 +6,7 @@
 import Foundation
 
 protocol ICoreDatasource{
-    func save(data: Repository) -> Void
+    func saveRepositoriesData(data: Repository)
+    func deleteRepositoriesData()
+    func fetchRepositoriesData() -> [Repository]
 }

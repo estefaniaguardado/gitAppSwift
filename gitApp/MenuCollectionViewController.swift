@@ -167,7 +167,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     func reloadRepositoriesData(byLastIndex: Int, dataResults: [Repository]) {
 
         for (_, dataRepository) in dataResults.enumerated() {
-            coreDataHandler.save(data: dataRepository)
+            coreDataHandler.saveRepositoriesData(data: dataRepository)
         }
 
         self.resultsCount += (dataResults.count)
