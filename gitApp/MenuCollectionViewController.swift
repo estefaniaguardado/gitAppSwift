@@ -86,6 +86,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             customizationOutlets(isEnable: false, color: .gray)
             self.repositoriesData.removeAll()
             self.resultsCount = 0
+            coreDataHandler.saveQueryTerm(term: searchTerm)
             coreDataHandler.deleteRepositoriesData()
             KingfisherManager.shared.cache.clearMemoryCache()
             KingfisherManager.shared.cache.clearDiskCache()

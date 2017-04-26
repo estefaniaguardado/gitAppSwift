@@ -37,9 +37,9 @@ class CoreDataHandler: ICoreDatasource {
         let managedContext = appDelegate.persistentContainer.viewContext
 
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "RepositoryData")
-        
+
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
+
         do {
             try managedContext.execute(batchDeleteRequest)
         } catch let error as NSError {
@@ -77,6 +77,69 @@ class CoreDataHandler: ICoreDatasource {
         }
 
         return repositories
+    }
+
+    func saveQueryTerm(term: String) {
+
+        if !(isNewQuery(newQuery: term)) {
+            return
+        }
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        let entity = NSEntityDescription.entity(forEntityName: "Query", in: managedContext)!
+
+        let query = NSManagedObject.init(entity: entity, insertInto: managedContext)
+
+        query.setValue(term, forKey: "queryTerm")
+
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could dont save: \(error), \(error.userInfo)")
+        }
+    }
+
+    func isNewQuery(newQuery: String) -> Bool {
+        let queriesCoreData = fetchQueries()
+
+        for (_, query) in queriesCoreData.enumerated() {
+            if query == newQuery {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    func fetchQueries() -> [String] {
+        var queries = [String]()
+        var objects = [NSManagedObject]()
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return queries
+        }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Query")
+
+        do {
+            objects = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+
+        for (_, object) in objects.enumerated() {
+            let term = object.value(forKey: "queryTerm") as! String
+            queries.append(term)
+        }
+
+        return queries
     }
 
 }
