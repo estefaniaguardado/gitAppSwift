@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Query" representedClassName="Query" syncable="YES" codeGenerationType="class">
+        <attribute name="queryTerm" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="repositories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RepositoryData" inverseName="searchTerm" inverseEntity="RepositoryData" syncable="YES"/>
+    </entity>
     <entity name="RepositoryData" representedClassName="RepositoryData" syncable="YES" codeGenerationType="class">
         <attribute name="forksCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -7,8 +11,10 @@
         <attribute name="ownerAvatar" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ownerName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="repoName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="searchTerm" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Query" inverseName="repositories" inverseEntity="Query" syncable="YES"/>
     </entity>
     <elements>
-        <element name="RepositoryData" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="RepositoryData" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="Query" positionX="-63" positionY="27" width="128" height="75"/>
     </elements>
 </model>
