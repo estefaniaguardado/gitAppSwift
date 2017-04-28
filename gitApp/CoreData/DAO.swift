@@ -8,7 +8,7 @@ import CoreData
 
 class DAO: ICoreDatasource {
 
-    func saveRepositoriesData(data: Repository) {
+    func saveRepositoriesData(data: Repository, queryObject: NSManagedObject) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -21,6 +21,8 @@ class DAO: ICoreDatasource {
 
         repository.setValuesForKeys(["id": data.id, "repoName": data.repoName, "ownerName": data.ownerName,
                                      "ownerAvatar": data.ownerAvatar, "language": data.language, "forksCount": data.forksCount])
+
+        repository.setValue(queryObject, forKey: "searchTerm")
 
         do {
             try managedContext.save()

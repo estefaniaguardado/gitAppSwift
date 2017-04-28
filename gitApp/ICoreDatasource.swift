@@ -7,7 +7,7 @@ import Foundation
 import CoreData
 
 protocol ICoreDatasource{
-    func saveRepositoriesData(data: Repository)
+    func saveRepositoriesData(data: Repository, queryObject: NSManagedObject)
     func deleteRepositoriesData()
     func fetchRepositoriesData() -> [Repository]
 
