@@ -79,14 +79,18 @@ class CoreDataHandler: ICoreDatasource {
         return repositories
     }
 
-    func saveQueryTerm(term: String) {
+    func saveQueryTerm(term: String) -> NSManagedObject {
+        let queriesCoreData = fetchQueries()
 
-        if !(isNewQuery(newQuery: term)) {
-            return
+        for (_, queryObject) in queriesCoreData.enumerated() {
+            let queryTerm = queryObject.value(forKey: "queryTerm") as! String
+            if queryTerm == term {
+                return queryObject
+            }
         }
 
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+            return NSManagedObject()
         }
 
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -99,29 +103,19 @@ class CoreDataHandler: ICoreDatasource {
 
         do {
             try managedContext.save()
+            return query
         } catch let error as NSError {
             print("Could dont save: \(error), \(error.userInfo)")
-        }
-    }
-
-    func isNewQuery(newQuery: String) -> Bool {
-        let queriesCoreData = fetchQueries()
-
-        for (_, query) in queriesCoreData.enumerated() {
-            if query == newQuery {
-                return false
-            }
+            return NSManagedObject()
         }
 
-        return true
     }
 
-    func fetchQueries() -> [String] {
-        var queries = [String]()
+    func fetchQueries() -> [NSManagedObject] {
         var objects = [NSManagedObject]()
 
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return queries
+            return objects
         }
 
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -130,16 +124,12 @@ class CoreDataHandler: ICoreDatasource {
 
         do {
             objects = try managedContext.fetch(fetchRequest)
+            return objects
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
+            return objects
         }
 
-        for (_, object) in objects.enumerated() {
-            let term = object.value(forKey: "queryTerm") as! String
-            queries.append(term)
-        }
-
-        return queries
     }
 
 }

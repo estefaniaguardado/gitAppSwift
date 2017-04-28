@@ -4,11 +4,12 @@
 //
 
 import Foundation
+import CoreData
 
 protocol ICoreDatasource{
     func saveRepositoriesData(data: Repository)
     func deleteRepositoriesData()
     func fetchRepositoriesData() -> [Repository]
 
-    func saveQueryTerm(term: String)
+    func saveQueryTerm(term: String) -> NSManagedObject
 }

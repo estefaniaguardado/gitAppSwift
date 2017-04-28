@@ -20,6 +20,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     private let gitService = GitService()
     private let coreDataHandler = CoreDataHandler()
     private var repositoriesData = [Repository]()
+    private var queryObject: NSManagedObject!
 
     private var pageNumber = 1
     private var isLoading = false
@@ -86,7 +87,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
             customizationOutlets(isEnable: false, color: .gray)
             self.repositoriesData.removeAll()
             self.resultsCount = 0
-            coreDataHandler.saveQueryTerm(term: searchTerm)
+            queryObject = coreDataHandler.saveQueryTerm(term: searchTerm)
             coreDataHandler.deleteRepositoriesData()
             KingfisherManager.shared.cache.clearMemoryCache()
             KingfisherManager.shared.cache.clearDiskCache()
