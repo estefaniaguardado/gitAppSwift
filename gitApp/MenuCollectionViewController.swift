@@ -68,7 +68,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         super.viewWillAppear(true)
         
         self.repositoriesData = coreDataHandler.fetchRepositoriesData()
-        if !repositoriesData.isEmpty {
+        if repositoriesData.count > 0 {
             self.collectionView?.reloadData()
         }
     }
