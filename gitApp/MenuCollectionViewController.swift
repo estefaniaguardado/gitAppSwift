@@ -18,7 +18,7 @@ private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, 
 class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     private let gitService = GitService()
-    private let coreDataHandler = CoreDataHandler()
+    private let coreDataHandler = DAO()
     private var repositoriesData = [Repository]()
     private var queryObject: NSManagedObject!
 

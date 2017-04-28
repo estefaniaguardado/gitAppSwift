@@ -6,7 +6,7 @@
 import UIKit
 import CoreData
 
-class CoreDataHandler: ICoreDatasource {
+class DAO: ICoreDatasource {
 
     func saveRepositoriesData(data: Repository) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
