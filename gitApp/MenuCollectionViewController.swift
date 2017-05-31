@@ -18,7 +18,7 @@ private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, 
 class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     private let gitService = GitService()
-    private let coreDataHandler = DAO()
+    private let daoCoreData = DAO()
     private var repositoriesData = [Repository]()
     private var queryObject: NSManagedObject!
 
@@ -67,7 +67,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        self.repositoriesData = coreDataHandler.fetchRepositoriesData()
+        self.repositoriesData = daoCoreData.fetchRepositoriesData()
         if repositoriesData.count > 0 {
             self.collectionView?.reloadData()
         }
@@ -179,7 +179,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     func reloadRepositoriesData(byLastIndex: Int, dataResults: [Repository]) {
 
         for (_, dataRepository) in dataResults.enumerated() {
-            coreDataHandler.saveRepositoriesData(data: dataRepository, queryObject: queryObject)
+            daoCoreData.saveRepositoriesData(data: dataRepository, queryObject: queryObject)
         }
 
         self.resultsCount += (dataResults.count)
