@@ -113,6 +113,22 @@ class DAO: ICoreDatasource {
 
     }
 
+    func removeRepositoriesDataOfPreviousQuery(query: NSManagedObject) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        managedContext.delete(query)
+
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could dont save: \(error), \(error.userInfo)")
+        }
+    }
+
     func fetchQueries() -> [NSManagedObject] {
         var objects = [NSManagedObject]()
 

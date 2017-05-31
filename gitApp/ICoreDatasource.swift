@@ -11,5 +11,6 @@ protocol ICoreDatasource{
     func deleteRepositoriesData()
     func fetchRepositoriesData() -> [Repository]
 
+    func removeRepositoriesDataOfPreviousQuery(query: NSManagedObject)
     func saveQueryTerm(term: String) -> NSManagedObject
 }

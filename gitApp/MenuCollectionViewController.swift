@@ -84,15 +84,23 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         } else {
             searchTerm = (query?.replacingOccurrences(of: " ", with: "-"))!
             searchTextField.text = searchTerm
-            customizationOutlets(isEnable: false, color: .gray)
-            self.repositoriesData.removeAll()
-            self.resultsCount = 0
-            queryObject = coreDataHandler.saveQueryTerm(term: searchTerm)
-            coreDataHandler.deleteRepositoriesData()
-            KingfisherManager.shared.cache.clearMemoryCache()
-            KingfisherManager.shared.cache.clearDiskCache()
+            initValues()
             getGitData()
         }
+    }
+    
+    func initValues() {
+        if queryObject != nil {
+            daoCoreData.removeRepositoriesDataOfPreviousQuery(query: queryObject)
+        }
+
+        customizationOutlets(isEnable: false, color: .gray)
+        self.repositoriesData.removeAll()
+        self.resultsCount = 0
+        queryObject = daoCoreData.saveQueryTerm(term: searchTerm)
+        daoCoreData.deleteRepositoriesData()
+        KingfisherManager.shared.cache.clearMemoryCache()
+        KingfisherManager.shared.cache.clearDiskCache()
     }
 
     func presentAlertWhenAccessToData(title: String, message: String) {
