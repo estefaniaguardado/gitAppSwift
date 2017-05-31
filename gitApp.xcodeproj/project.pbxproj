@@ -22,7 +22,7 @@
 		CAF1A5D41E9906130075C02D /* GitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D31E9906130075C02D /* GitService.swift */; };
 		CAF1A5D61E99061D0075C02D /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D51E99061D0075C02D /* Repository.swift */; };
 		CAF1A5D81E9906270075C02D /* IRepositoryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D71E9906270075C02D /* IRepositoryDatasource.swift */; };
-		ED1C11769CEE033CE99A3CD3 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1C1A7F20C0E4115C79E64F /* CoreDataHandler.swift */; };
+		ED1C11769CEE033CE99A3CD3 /* DAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1C1A7F20C0E4115C79E64F /* DAO.swift */; };
 		ED1C132945B5F4191A6FB669 /* ICoreDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1C1A5DADDBEB23C7BE3879 /* ICoreDatasource.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,7 +71,7 @@
 		CAF1A5D71E9906270075C02D /* IRepositoryDatasource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IRepositoryDatasource.swift; path = Protocols/IRepositoryDatasource.swift; sourceTree = "<group>"; };
 		E4BA31977F484B9401812EA1 /* Pods-gitAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gitAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-gitAppUITests/Pods-gitAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		ED1C1A5DADDBEB23C7BE3879 /* ICoreDatasource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICoreDatasource.swift; sourceTree = "<group>"; };
-		ED1C1A7F20C0E4115C79E64F /* CoreDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
+		ED1C1A7F20C0E4115C79E64F /* DAO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAO.swift; sourceTree = "<group>"; };
 		F443B03D7D852656768B5D1E /* Pods-gitAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gitAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-gitAppTests/Pods-gitAppTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -213,7 +213,7 @@
 		ED1C1FE4B79CC0E7A9517F45 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				ED1C1A7F20C0E4115C79E64F /* CoreDataHandler.swift */,
+				ED1C1A7F20C0E4115C79E64F /* DAO.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -506,7 +506,7 @@
 				CA620AA71E9237250078D888 /* RepositoryCollectionViewCell.swift in Sources */,
 				CAF1A5D41E9906130075C02D /* GitService.swift in Sources */,
 				CAB2E2A91E8E81C7000B773D /* AppDelegate.swift in Sources */,
-				ED1C11769CEE033CE99A3CD3 /* CoreDataHandler.swift in Sources */,
+				ED1C11769CEE033CE99A3CD3 /* DAO.swift in Sources */,
 				ED1C132945B5F4191A6FB669 /* ICoreDatasource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

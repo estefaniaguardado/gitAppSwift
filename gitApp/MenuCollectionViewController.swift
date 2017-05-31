@@ -18,8 +18,9 @@ private let blueDarkColor = UIColor.init(red: 0.101, green: 0.321, blue: 0.462, 
 class MenuCollectionViewController: UICollectionViewController, UITextFieldDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     private let gitService = GitService()
-    private let coreDataHandler = CoreDataHandler()
+    private let daoCoreData = DAO()
     private var repositoriesData = [Repository]()
+    private var queryObject: NSManagedObject!
 
     private var pageNumber = 1
     private var isLoading = false
@@ -66,8 +67,9 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        self.repositoriesData = coreDataHandler.fetchRepositoriesData()
-        if !repositoriesData.isEmpty {
+        self.repositoriesData = daoCoreData.fetchRepositoriesData()
+        //TODO: error when scroll
+        if repositoriesData.count > 0 {
             self.collectionView?.reloadData()
         }
     }
@@ -83,14 +85,23 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         } else {
             searchTerm = (query?.replacingOccurrences(of: " ", with: "-"))!
             searchTextField.text = searchTerm
-            customizationOutlets(isEnable: false, color: .gray)
-            self.repositoriesData.removeAll()
-            self.resultsCount = 0
-            coreDataHandler.deleteRepositoriesData()
-            KingfisherManager.shared.cache.clearMemoryCache()
-            KingfisherManager.shared.cache.clearDiskCache()
+            initValues()
             getGitData()
         }
+    }
+    
+    func initValues() {
+        if queryObject != nil {
+            daoCoreData.removeRepositoriesDataOfPreviousQuery(query: queryObject)
+        }
+
+        customizationOutlets(isEnable: false, color: .gray)
+        self.repositoriesData.removeAll()
+        self.resultsCount = 0
+        queryObject = daoCoreData.saveQueryTerm(term: searchTerm)
+        daoCoreData.deleteRepositoriesData()
+        KingfisherManager.shared.cache.clearMemoryCache()
+        KingfisherManager.shared.cache.clearDiskCache()
     }
 
     func presentAlertWhenAccessToData(title: String, message: String) {
@@ -177,7 +188,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
     func reloadRepositoriesData(byLastIndex: Int, dataResults: [Repository]) {
 
         for (_, dataRepository) in dataResults.enumerated() {
-            coreDataHandler.saveRepositoriesData(data: dataRepository)
+            daoCoreData.saveRepositoriesData(data: dataRepository, queryObject: queryObject)
         }
 
         self.resultsCount += (dataResults.count)

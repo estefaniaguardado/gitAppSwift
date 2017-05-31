@@ -6,9 +6,9 @@
 import UIKit
 import CoreData
 
-class CoreDataHandler: ICoreDatasource {
+class DAO: ICoreDatasource {
 
-    func saveRepositoriesData(data: Repository) {
+    func saveRepositoriesData(data: Repository, queryObject: NSManagedObject) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -21,6 +21,8 @@ class CoreDataHandler: ICoreDatasource {
 
         repository.setValuesForKeys(["id": data.id, "repoName": data.repoName, "ownerName": data.ownerName,
                                      "ownerAvatar": data.ownerAvatar, "language": data.language, "forksCount": data.forksCount])
+
+        repository.setValue(queryObject, forKey: "searchTerm")
 
         do {
             try managedContext.save()
@@ -37,9 +39,9 @@ class CoreDataHandler: ICoreDatasource {
         let managedContext = appDelegate.persistentContainer.viewContext
 
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "RepositoryData")
-        
+
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
+
         do {
             try managedContext.execute(batchDeleteRequest)
         } catch let error as NSError {
@@ -77,6 +79,75 @@ class CoreDataHandler: ICoreDatasource {
         }
 
         return repositories
+    }
+
+    func saveQueryTerm(term: String) -> NSManagedObject {
+        let queriesCoreData = fetchQueries()
+
+        for (_, queryObject) in queriesCoreData.enumerated() {
+            let queryTerm = queryObject.value(forKey: "queryTerm") as! String
+            if queryTerm == term {
+                return queryObject
+            }
+        }
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return NSManagedObject()
+        }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        let entity = NSEntityDescription.entity(forEntityName: "Query", in: managedContext)!
+
+        let query = NSManagedObject.init(entity: entity, insertInto: managedContext)
+
+        query.setValue(term, forKey: "queryTerm")
+
+        do {
+            try managedContext.save()
+            return query
+        } catch let error as NSError {
+            print("Could dont save: \(error), \(error.userInfo)")
+            return NSManagedObject()
+        }
+
+    }
+
+    func removeRepositoriesDataOfPreviousQuery(query: NSManagedObject) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        managedContext.delete(query)
+
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could dont save: \(error), \(error.userInfo)")
+        }
+    }
+
+    func fetchQueries() -> [NSManagedObject] {
+        var objects = [NSManagedObject]()
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return objects
+        }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Query")
+
+        do {
+            objects = try managedContext.fetch(fetchRequest)
+            return objects
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+            return objects
+        }
+
     }
 
 }
