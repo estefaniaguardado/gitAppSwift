@@ -68,6 +68,7 @@ class MenuCollectionViewController: UICollectionViewController, UITextFieldDeleg
         super.viewWillAppear(true)
         
         self.repositoriesData = daoCoreData.fetchRepositoriesData()
+        //TODO: error when scroll
         if repositoriesData.count > 0 {
             self.collectionView?.reloadData()
         }
