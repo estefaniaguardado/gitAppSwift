@@ -12,11 +12,18 @@
 		89CEF52F556071A79FFCC38C /* Pods_gitApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BC0D337F9229B26C6A9142E /* Pods_gitApp.framework */; };
 		CA620AA51E9235890078D888 /* MenuCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA620AA41E9235890078D888 /* MenuCollectionViewController.swift */; };
 		CA620AA71E9237250078D888 /* RepositoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA620AA61E9237250078D888 /* RepositoryCollectionViewCell.swift */; };
+		CAAB3D4A1EE039FC002FF23F /* GitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D31E9906130075C02D /* GitService.swift */; };
+		CAAB3D4B1EE03A18002FF23F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D51E99061D0075C02D /* Repository.swift */; };
+		CAAB3D4C1EE03A2A002FF23F /* IRepositoryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D71E9906270075C02D /* IRepositoryDatasource.swift */; };
+		CAAB3D4D1EE03A32002FF23F /* ICoreDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1C1A5DADDBEB23C7BE3879 /* ICoreDatasource.swift */; };
+		CAAB3D4E1EE03A38002FF23F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2A81E8E81C7000B773D /* AppDelegate.swift */; };
+		CAAB3D4F1EE03A3A002FF23F /* MenuCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA620AA41E9235890078D888 /* MenuCollectionViewController.swift */; };
+		CAAB3D501EE03A3C002FF23F /* RepositoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA620AA61E9237250078D888 /* RepositoryCollectionViewCell.swift */; };
+		CAAB3D511EE03A42002FF23F /* DAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1C1A7F20C0E4115C79E64F /* DAO.swift */; };
 		CAB2E2A91E8E81C7000B773D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2A81E8E81C7000B773D /* AppDelegate.swift */; };
 		CAB2E2AE1E8E81C7000B773D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAB2E2AC1E8E81C7000B773D /* Main.storyboard */; };
 		CAB2E2B01E8E81C7000B773D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAB2E2AF1E8E81C7000B773D /* Assets.xcassets */; };
 		CAB2E2B31E8E81C7000B773D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAB2E2B11E8E81C7000B773D /* LaunchScreen.storyboard */; };
-		CAB2E2BE1E8E81C7000B773D /* gitAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2BD1E8E81C7000B773D /* gitAppTests.swift */; };
 		CAB2E2C91E8E81C8000B773D /* gitAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB2E2C81E8E81C8000B773D /* gitAppUITests.swift */; };
 		CAEC64111EADF2EF00C032DA /* gitApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CAEC640F1EADF2EF00C032DA /* gitApp.xcdatamodeld */; };
 		CAF1A5D41E9906130075C02D /* GitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D31E9906130075C02D /* GitService.swift */; };
@@ -24,6 +31,7 @@
 		CAF1A5D81E9906270075C02D /* IRepositoryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF1A5D71E9906270075C02D /* IRepositoryDatasource.swift */; };
 		ED1C11769CEE033CE99A3CD3 /* DAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1C1A7F20C0E4115C79E64F /* DAO.swift */; };
 		ED1C132945B5F4191A6FB669 /* ICoreDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1C1A5DADDBEB23C7BE3879 /* ICoreDatasource.swift */; };
+		ED1C16F2A1084990FD718CE7 /* GitServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1C1B463D284795863F2C72 /* GitServiceTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +68,6 @@
 		CAB2E2B21E8E81C7000B773D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CAB2E2B41E8E81C7000B773D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAB2E2B91E8E81C7000B773D /* gitAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = gitAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CAB2E2BD1E8E81C7000B773D /* gitAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gitAppTests.swift; sourceTree = "<group>"; };
 		CAB2E2BF1E8E81C7000B773D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAB2E2C41E8E81C7000B773D /* gitAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = gitAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAB2E2C81E8E81C8000B773D /* gitAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gitAppUITests.swift; sourceTree = "<group>"; };
@@ -72,6 +79,7 @@
 		E4BA31977F484B9401812EA1 /* Pods-gitAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gitAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-gitAppUITests/Pods-gitAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		ED1C1A5DADDBEB23C7BE3879 /* ICoreDatasource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICoreDatasource.swift; sourceTree = "<group>"; };
 		ED1C1A7F20C0E4115C79E64F /* DAO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAO.swift; sourceTree = "<group>"; };
+		ED1C1B463D284795863F2C72 /* GitServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitServiceTest.swift; sourceTree = "<group>"; };
 		F443B03D7D852656768B5D1E /* Pods-gitAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gitAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-gitAppTests/Pods-gitAppTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -178,8 +186,8 @@
 		CAB2E2BC1E8E81C7000B773D /* gitAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				CAB2E2BD1E8E81C7000B773D /* gitAppTests.swift */,
 				CAB2E2BF1E8E81C7000B773D /* Info.plist */,
+				ED1C1B463D284795863F2C72 /* GitServiceTest.swift */,
 			);
 			path = gitAppTests;
 			sourceTree = "<group>";
@@ -515,7 +523,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAB2E2BE1E8E81C7000B773D /* gitAppTests.swift in Sources */,
+				CAAB3D4E1EE03A38002FF23F /* AppDelegate.swift in Sources */,
+				CAAB3D4A1EE039FC002FF23F /* GitService.swift in Sources */,
+				ED1C16F2A1084990FD718CE7 /* GitServiceTest.swift in Sources */,
+				CAAB3D511EE03A42002FF23F /* DAO.swift in Sources */,
+				CAAB3D4C1EE03A2A002FF23F /* IRepositoryDatasource.swift in Sources */,
+				CAAB3D501EE03A3C002FF23F /* RepositoryCollectionViewCell.swift in Sources */,
+				CAAB3D4B1EE03A18002FF23F /* Repository.swift in Sources */,
+				CAAB3D4F1EE03A3A002FF23F /* MenuCollectionViewController.swift in Sources */,
+				CAAB3D4D1EE03A32002FF23F /* ICoreDatasource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,6 +705,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = gitAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Larsecg.gitAppTests;
@@ -704,6 +721,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = gitAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Larsecg.gitAppTests;
